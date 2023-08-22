@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,6 +21,7 @@ Route::get('/', function () {
 
 Route::group(['middleware' => ['auth']], function () {
     include_once "childs/auth.php";
+    include_once "childs/home.php";
 });
 
 Route::group(['middleware' => ['guest']], function () {
