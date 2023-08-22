@@ -18,9 +18,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/login', [AuthController::class, 'loginProcess'])->name('login.process');
-Route::get('/register', [AuthController::class, 'register'])->name('register');
-Route::post('/register', [AuthController::class, 'registerProcess'])->name('register.process');
-Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('forgot-password');
-Route::get('/code-verification', [AuthController::class, 'codeVerification'])->name('code-verification');
+Route::group(['middleware' => ['auth']], function () {
+    include_once "childs/auth.php";
+});
+
+Route::group(['middleware' => ['guest']], function () {
+    include_once "childs/auth-not-login.php";
+});
