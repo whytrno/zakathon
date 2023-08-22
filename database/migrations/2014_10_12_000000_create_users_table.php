@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->enum('role', ['admin', 'muzakki', 'mustahiq'])->default('muzakki');
             $table->string('email')->unique();
             $table->string('password');
-            $table->integer('nik')->nullable();
+            $table->string('nik')->nullable();
             $table->enum('jenis_kelamin', ['laki laki', 'perempuan']);
             $table->string('telepon')->nullable();
             $table->text('alamat')->nullable();
