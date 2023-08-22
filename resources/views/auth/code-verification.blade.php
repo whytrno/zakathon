@@ -1,4 +1,4 @@
-@extends('layouts.auth.main')
+@extends('layouts.main')
 @section('content')
     <div class="flex flex-col justify-center items-center h-full space-y-5">
         <img src="{{ asset('logo.png') }}" alt="Logo">
