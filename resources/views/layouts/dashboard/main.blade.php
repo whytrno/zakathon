@@ -17,14 +17,12 @@
     <div class="flex">
         @include('layouts.dashboard.sidebar')
         <div class="w-[77%]">
-            <div class="flex justify-end items-center gap-3 py-5 bg-white px-10">
-                <img src="{{ asset('images/default-profile-picture.png') }}" alt=""
-                    class="rounded-full w-10 h-10">
-                <p class="font-bold text-black/70">Admin</p>
-            </div>
+            @include('layouts.dashboard.navbar')
             <div class="bg-[#F6F8FA] py-8 px-10 rounded-xl min-h-full w-full space-y-10">
                 @yield('content')
             </div>
+
+            @stack('outside-countainer')
         </div>
     </div>
 </body>

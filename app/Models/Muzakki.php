@@ -2,10 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\Base\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Muzakki extends Model
+class Muzakki extends BaseModel
 {
     use HasFactory;
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

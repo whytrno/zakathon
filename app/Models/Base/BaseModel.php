@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Base;
 
-use App\Models\Base\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Mustahiq extends BaseModel
+class BaseModel extends Model
 {
     use HasFactory;
+
+    protected $guarded = ['id'];
 }
