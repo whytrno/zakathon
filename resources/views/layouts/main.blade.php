@@ -12,6 +12,10 @@
 
 <body>
     @yield('content')
+
+    @if (auth()->user())
+        @include('layouts.navbar')
+    @endif
 </body>
 
 @stack('scripts')
