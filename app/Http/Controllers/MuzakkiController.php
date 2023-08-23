@@ -44,13 +44,13 @@ class MuzakkiController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nama' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'nik' => 'required|string|min:16|unique:users,nik,' . $id,
-            'jenis_kelamin' => 'required|in:laki laki,perempuan',
-            'telepon' => 'required|string|min:10',
-            'alamat' => 'required|string',
-            'jenis' => 'required|in:perorangan,lembaga non upz,lembaga upz',
+            'nama' => 'nullable|string|max:255',
+            'email' => 'nullable|email|unique:users,email,' . $id,
+            'nik' => 'nullable|string|min:16|unique:users,nik,' . $id,
+            'jenis_kelamin' => 'nullable|in:laki laki,perempuan',
+            'telepon' => 'nullable|string|min:10',
+            'alamat' => 'nullable|string',
+            'jenis' => 'nullable|in:perorangan,lembaga non upz,lembaga upz',
         ]);
 
         $user = User::findOrFail($request->id);
