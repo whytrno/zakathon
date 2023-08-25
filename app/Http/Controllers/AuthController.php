@@ -14,28 +14,23 @@ class AuthController extends Controller
 
     public function loginProcess(Request $request)
     {
-        $user = User::where('email', $request->email)->with(['muzakki'])->first();
+        $user = User::where('email', $request->email)->first();
 
         if (!$user) {
             return redirect()->back()->with('error', 'Email atau password salah!');
         }
 
-        // if $user->muzakki is null, then it redirect to /dashboard if $user->muzakki not null then redirect to /home
-        if ($user->muzakki) {
-            auth()->login($user);
+        if ($user->role == 'muzakki') {
+            auth()->attempt($request->only('email', 'password'));
 
             return redirect()->intended('/home');
-        } else {
-            auth()->login($user);
+        } else if ($user->role == 'admin') {
+            auth()->attempt($request->only('email', 'password'));
 
             return redirect()->intended('/dashboard');
+        } else {
+            return redirect()->back()->with('error', 'Email atau password salah!');
         }
-
-        // if (auth()->attempt($request->only('email', 'password'))) {
-        //     return redirect()->intended('/');
-        // }
-
-        // return redirect()->back()->with('error', 'Email atau password salah!');
     }
 
     public function register()

@@ -17,11 +17,11 @@ return new class extends Migration {
             $table->string('email')->unique();
             $table->string('password');
             $table->string('nik')->nullable();
-            $table->enum('jenis_kelamin', ['laki laki', 'perempuan']);
+            $table->enum('jenis_kelamin', ['laki laki', 'perempuan'])->nullable();
             $table->string('telepon')->nullable();
             $table->text('alamat')->nullable();
             $table->string('nama_pimpinan')->nullable();
-            $table->integer('nik_pimpinan')->nullable();
+            $table->string('nik_pimpinan')->nullable();
             $table->string('nama_cp')->nullable();
             $table->string('telp_cp')->nullable();
             $table->timestamps();

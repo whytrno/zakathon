@@ -2,30 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Muzakki;
-use App\Models\User;
+use App\Models\Mustahiq;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
-class MuzakkiController extends Controller
+class MustahiqController extends Controller
 {
     public function index()
     {
-        $datas = Muzakki::with('user')->get();
+        $datas = Mustahiq::with('user')->get();
 
-        return view('dashboard.muzakki.index', compact('datas'));
+        return view('dashboard.mustahiq.index', compact('datas'));
     }
 
     public function create()
     {
-        return view('dashboard.muzakki.create');
+        return view('dashboard.mustahiq.create');
     }
 
     public function edit($id)
     {
-        $data = Muzakki::with('user')->findOrFail($id);
+        $data = Mustahiq::with('user')->findOrFail($id);
 
-        return view('dashboard.muzakki.edit', compact('data'));
+        return view('dashboard.mustahiq.edit', compact('data'));
     }
 
     public function store(Request $request)
@@ -49,18 +47,18 @@ class MuzakkiController extends Controller
 
         $user = User::create($request->all());
 
-        Muzakki::create([
+        Mustahiq::create([
             'user_id' => $user->id,
             'npwz' => rand(100000000000, 999999999999),
             'jenis' => $request->jenis,
         ]);
 
-        return redirect()->route('muzakki.index')->with('success', 'Berhasil menambahkan data');
+        return redirect()->route('mustahiq.index')->with('success', 'Berhasil menambahkan data');
     }
 
     public function update(Request $request, $id)
     {
-        $muzakki = Muzakki::findOrFail($id);
+        $muzakki = Mustahiq::findOrFail($id);
 
         $request->validate([
             'nama' => 'required|string|max:255',
@@ -88,7 +86,7 @@ class MuzakkiController extends Controller
             'jenis' => $request->jenis,
         ]);
 
-        return redirect()->route('muzakki.index')->with('success', 'Berhasil mengubah data');
+        return redirect()->route('mustahiq.index')->with('success', 'Berhasil mengubah data');
     }
 
     public function destroy($id)
