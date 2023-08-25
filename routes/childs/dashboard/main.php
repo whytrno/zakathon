@@ -9,4 +9,8 @@ Route::prefix('dashboard')->group(function () {
     Route::prefix('user')->group(function () {
         include_once "muzakki.php";
     });
+    
+    Route::prefix('pendistribusian')->group(function(){
+        include_once "pendistribusian.php";
+    });
 });
