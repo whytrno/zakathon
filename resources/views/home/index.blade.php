@@ -65,6 +65,37 @@
                 </div>
 
             </form>
+
+
         </div>
     </div>
+
+    {{-- <div class="bg-gray-200 h-screen flex justify-center items-center">
+        <button id="showModal" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Buka Modal</button>
+
+<div id="modal" class="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white rounded p-6 w-1/2">
+        <h2 class="text-xl font-bold mb-4">Modal Title</h2>
+        <p>Isi modal di sini...</p>
+        <button id="closeModal" class="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Tutup Modal</button>
+    </div>
+</div>
+    </div> --}}
 @endsection
+
+
+@push('scripts')
+    <script>
+        const showModalButton = document.getElementById('showModal');
+        const closeModalButton = document.getElementById('closeModal');
+        const modal = document.getElementById('modal');
+
+        showModalButton.addEventListener('click', () => {
+            modal.classList.remove('hidden');
+        });
+
+        closeModalButton.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+    </script>
+@endpush

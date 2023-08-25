@@ -22,7 +22,6 @@ Route::get('/', function () {
 Route::group(['middleware' => ['auth']], function () {
     include_once "childs/auth.php";
     include_once "childs/home.php";
-
     include_once "childs/dashboard/main.php";
 });
 
