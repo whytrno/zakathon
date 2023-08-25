@@ -31,7 +31,7 @@
                         Muzakki
                     </th>
                     <th class="p-8 text-xs text-gray-500">
-                        Alamat
+                        Jenis Muzakki
                     </th>
                     <th class="p-8 text-xs text-gray-500">
                         Aksi
@@ -55,7 +55,7 @@
                             {{ $data->user->nama }}
                         </td>
                         <td class="px-6 py-4 text-center">
-                            {{ $data->user->alamat }}
+                            {{ ucwords($data->jenis) }}
                         </td>
                         <td class="px-6 py-4 flex justify-center gap-2">
                             <a href="{{ route('muzakki.edit', $data->id) }}"
