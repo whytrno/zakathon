@@ -17,6 +17,11 @@ class User extends Authenticatable
         return $this->hasOne(Muzakki::class);
     }
 
+    public function mustahiq()
+    {
+        return $this->hasOne(Mustahiq::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *

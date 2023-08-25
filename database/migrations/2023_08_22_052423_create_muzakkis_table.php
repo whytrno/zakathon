@@ -14,6 +14,10 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('npwz')->unique();
+            $table->string('nama_pimpinan')->nullable();
+            $table->string('nik_pimpinan')->nullable();
+            $table->string('nama_cp')->nullable();
+            $table->string('telp_cp')->nullable();
             $table->enum('jenis', ['perorangan', 'lembaga non upz', 'lembaga upz']);
             $table->timestamps();
 

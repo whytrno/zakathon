@@ -8,5 +8,6 @@ Route::prefix('dashboard')->group(function () {
 
     Route::prefix('user')->group(function () {
         include_once "muzakki.php";
+        include_once "mustahiq.php";
     });
 });

@@ -3,7 +3,7 @@
 @section('content')
     <div class="flex justify-between items-center">
         <h1 class="font-bold text-2xl text-[#014F31]">Data Muzakki</h1>
-        <a href="{{ route('muzakki.create') }}"
+        <a href="{{ route('mustahiq.create') }}"
             class="flex gap-2 hover:bg-[#1D8E48] items-center bg-[#014F31] rounded-2xl p-2 px-4 text-white fill-white stroke-white">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                 class="w-6 h-6">
@@ -25,13 +25,13 @@
                         Tanggal Registrasi
                     </th>
                     <th class="p-8 text-xs text-gray-500">
-                        NPWZ
+                        NIM
                     </th>
                     <th class="p-8 text-xs text-gray-500">
-                        Muzakki
+                        Mustahiq
                     </th>
                     <th class="p-8 text-xs text-gray-500">
-                        Alamat
+                        Asnaf
                     </th>
                     <th class="p-8 text-xs text-gray-500">
                         Aksi
@@ -49,16 +49,16 @@
                         </td>
                         <td onclick="toggleModal({{ $data->id }})"
                             class="px-6 py-4 text-center text-blue-700 hover:text-blue-300 cursor-pointer">
-                            {{ $data->npwz }}
+                            {{ $data->nim }}
                         </td>
                         <td class="px-6 py-4 text-center">
                             {{ $data->user->nama }}
                         </td>
                         <td class="px-6 py-4 text-center">
-                            {{ $data->user->alamat }}
+                            {{ $data->asnaf }}
                         </td>
                         <td class="px-6 py-4 flex justify-center gap-2">
-                            <a href="{{ route('muzakki.edit', $data->id) }}"
+                            <a href="{{ route('mustahiq.edit', $data->id) }}"
                                 class="flex items-center justify-center bg-blue-500 p-2 rounded-full">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="w-4 h-4 stroke-white">
@@ -67,7 +67,7 @@
                                 </svg>
                             </a>
 
-                            <form action="{{ route('muzakki.delete', $data->user->id) }}" method="POST">
+                            <form action="{{ route('mustahiq.delete', $data->user->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" onclick="confirm('Apakah anda yakin ingin menghapus data ini?')"
@@ -96,27 +96,59 @@
 
                             <div class="grid grid-cols-2 gap-5">
                                 <div class="">
-                                    <p class="font-semibold">Jenis Muzakki: </p>
+                                    <p class="font-semibold">Jenis Mustahiq: </p>
                                     <p>{{ ucwords($data->jenis) }}</p>
-                                </div>
-                                <div class="{{ $data->jenis == 'perorangan' ? '' : 'hidden' }}">
-                                    <p class="font-semibold">NIK: </p>
-                                    <p>{{ $data->user->nik }}</p>
-                                </div>
-                                <div class="">
-                                    <p class="font-semibold">Email: </p>
-                                    <p>{{ $data->user->email }}</p>
                                 </div>
                                 <div class="">
                                     <p class="font-semibold">{{ $data->jenis == 'perorangan' ? 'Nama:' : 'Nama Lembaga:' }}
                                     </p>
                                     <p>{{ ucwords($data->user->nama) }}</p>
                                 </div>
+                                <div class="{{ $data->jenis == 'perorangan' ? '' : 'hidden' }}">
+                                    <p class="font-semibold">Tempat Lahir: </p>
+                                    <p>{{ $data->tempat_lahir }}</p>
+                                </div>
+                                <div class="{{ $data->jenis == 'perorangan' ? '' : 'hidden' }}">
+                                    <p class="font-semibold">Tanggal Lahir: </p>
+                                    <p>{{ $data->tanggal_lahir }}</p>
+                                </div>
+                                <div class="">
+                                    <p class="font-semibold">Email: </p>
+                                    <p>{{ $data->user->email }}</p>
+                                </div>
+                                <div class="">
+                                    <p class="font-semibold">Pemilik Rekening: </p>
+                                    <p>{{ $data->pemilik_rekening }}</p>
+                                </div>
+                                <div class="">
+                                    <p class="font-semibold">Bank: </p>
+                                    <p>{{ $data->bank }}</p>
+                                </div>
+                                <div class="">
+                                    <p class="font-semibold">No. Rekening: </p>
+                                    <p>{{ $data->no_rek }}</p>
+                                </div>
+                                <div class="">
+                                    <p class="font-semibold">Asnaf: </p>
+                                    <p>{{ ucwords($data->asnaf) }}</p>
+                                </div>
+                                <div class="{{ $data->jenis == 'perorangan' ? '' : 'hidden' }}">
+                                    <p class="font-semibold">NIK: </p>
+                                    <p>{{ $data->user->nik }}</p>
+                                </div>
+                                <div class="{{ $data->jenis == 'perorangan' ? '' : 'hidden' }}">
+                                    <p class="font-semibold">Pekerjaan: </p>
+                                    <p>{{ ucwords($data->pekerjaan) }}</p>
+                                </div>
+                                <div class="{{ $data->jenis == 'perorangan' ? 'hidden' : '' }}">
+                                    <p class="font-semibold">Jumlah Anggota: </p>
+                                    <p>{{ ucwords($data->jumlah_anggota) }}</p>
+                                </div>
                                 <div class=" {{ $data->jenis == 'perorangan' ? '' : 'hidden' }}">
                                     <p class="font-semibold">Jenis Kelamin: </p>
                                     <p>{{ ucwords($data->user->jenis_kelamin) }}</p>
                                 </div>
-                                <div class=" {{ $data->jenis == 'perorangan' ? '' : 'hidden' }}">
+                                <div class="">
                                     <p class="font-semibold">Telepon: </p>
                                     <p>{{ $data->user->telepon }}</p>
                                 </div>
@@ -124,80 +156,7 @@
                                     <p class="font-semibold">Alamat: </p>
                                     <p>{{ $data->user->alamat }}</p>
                                 </div>
-                                <div class=" {{ $data->jenis == 'perorangan' ? 'hidden' : '' }}">
-                                    <p class="font-semibold">NIK Pimpinan: </p>
-                                    <p>{{ $data->user->nik_pimpinan }}</p>
-                                </div>
-                                <div class=" {{ $data->jenis == 'perorangan' ? 'hidden' : '' }}">
-                                    <p class="font-semibold">Nama Pimpinan: </p>
-                                    <p>{{ $data->user->nama_pimpinan }}</p>
-                                </div>
-                                <div class=" {{ $data->jenis == 'perorangan' ? 'hidden' : '' }}">
-                                    <p class="font-semibold">Nama CP: </p>
-                                    <p>{{ $data->user->nama_cp }}</p>
-                                </div>
-                                <div class=" {{ $data->jenis == 'perorangan' ? 'hidden' : '' }}">
-                                    <p class="font-semibold">Telepon CP: </p>
-                                    <p>{{ $data->user->telp_cp }}</p>
-                                </div>
                             </div>
-                            {{-- <form action="" class="space-y-6">
-                                <div class="grid grid-cols-2 gap-5">
-                                    <div class="space-y-4">
-                                        <div class="space-y-2">
-                                            <p>Jenis Muzakki</p>
-                                            <select disabled name=""
-                                                class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
-                                                <option>{{ ucwords($data->jenis) }}</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="space-y-2">
-                                            <p>NIK</p>
-                                            <input type="number" disabled value="{{ $data->user->nik }}"
-                                                class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
-                                        </div>
-
-                                        <div class="space-y-2">
-                                            <p>Email</p>
-                                            <input type="email" disabled value="{{ $data->user->email }}"
-                                                class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
-                                        </div>
-                                    </div>
-                                    <div class="space-y-4">
-                                        <div class="space-y-2">
-                                            <p>Nama</p>
-                                            <input type="text" disabled value="{{ $data->user->nama }}"
-                                                class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
-                                        </div>
-
-                                        <div class="space-y-2">
-                                            <p>Jenis Kelamin</p>
-                                            <select name="jenis_kelamin"
-                                                class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
-                                                <option>{{ ucwords($data->user->jenis_kelamin) }}</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="space-y-2">
-                                            <p>Telepon</p>
-                                            <input type="number" name="telepon" value="{{ $data->user->telepon }}"
-                                                class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-span-2 space-y-2">
-                                        <p>Alamat</p>
-                                        <input type="text" name="alamat" value="{{ $data->user->alamat }}"
-                                            class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
-                                    </div>
-                                </div>
-
-                                <div class="flex justify-end gap-3">
-                                    <button onclick="toggleModal('detail', {{ $data->id }})" type="button"
-                                        class="border border-gray-800 py-2 px-4 rounded-[12px] text-gray-800">Batal</button>
-                                </div>
-                            </form> --}}
                         </div>
                     </div>
                 @endforeach
@@ -209,7 +168,6 @@
 @push('scripts')
     <script>
         function toggleModal(id) {
-            console.log(id);
             $('#detailModal' + id).toggleClass('hidden');
         }
 

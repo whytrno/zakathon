@@ -17,65 +17,24 @@
             <h2 class="text-xl font-semibold">Ubah Data Muzakki</h2>
         </div>
 
-        <form action="{{ route('muzakki.update', $data->id) }}" class="space-y-6" method="POST">
+        <form action="{{ route('mustahiq.update', $data->id) }}" class="space-y-6" method="POST">
             @csrf
             <div class="grid grid-cols-2 gap-5">
                 <div class="space-y-2">
-                    <p>Jenis Muzakki <label class="text-red-700">*</label></p>
-                    <select onchange="toggleJenis('create', null)" name="jenis"
+                    <p>Jenis Mustahiq <label class="text-red-700">*</label></p>
+                    <select onchange="toggleJenis()" name="jenis"
                         class="jenis w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4" required>
                         <option value="{{ $data->jenis }}" selected>{{ ucwords($data->jenis) }}</option>
-                        <option disabled>===================</option>
+                        <option disabled>=====================</option>
                         <option value="perorangan">Perorangan
                         </option>
-                        <option value="lembaga upz">Lembaga
-                            UPZ</option>
-                        <option value="lembaga non upz">
-                            Lembaga non UPZ</option>
+                        <option value="lembaga upz">Kelompok</option>
                     </select>
                     @error('jenis')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
 
-                {{-- Perorangan --}}
-                <div class="nik space-y-2 {{ is_null($data->user->nik) ? 'hidden' : '' }}">
-                    <p>NIK <label class="text-red-700">*</label></p>
-                    <input type="number" value="{{ $data->user->nik }}" name="nik"
-                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
-                    @error('nik')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-                </div>
-                {{-- End Perorangan --}}
-
-                {{-- Lembaga --}}
-                <div class="nik-pimpinan {{ is_null($data->user->nik) ? '' : 'hidden' }} space-y-2">
-                    <p>NIK Pimpinan <label class="text-red-700">*</label></p>
-                    <input type="number" value="{{ $data->user->nik_pimpinan }}" name="nik_pimpinan"
-                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
-                    @error('nik')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-                </div>
-                {{-- End Lembaga --}}
-
-                <div class="space-y-2">
-                    <p>Email <label class="text-red-700">*</label></p>
-                    <input type="email" value="{{ $data->user->email }}" name="email"
-                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
-                    @error('email')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="space-y-2">
-                    <p>Password <label class="text-red-700">(Kosongkan jika tidak ingin mengubah)</label></p>
-                    <input type="password" name="password" class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
-                    @error('password')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-                </div>
                 <div class="space-y-2">
                     <p class="nama">Nama <label class="text-red-700"> *</label></p>
                     <input type="text" value="{{ $data->user->nama }}" name="nama"
@@ -85,44 +44,128 @@
                     @enderror
                 </div>
 
-                {{-- Lembaga --}}
-                <div class="nama-pimpinan {{ is_null($data->user->nik) ? '' : 'hidden' }} space-y-2">
-                    <p>Nama Pimpinan <label class="text-red-700"> *</label></p>
-                    <input type="text" value="{{ $data->user->nama_pimpinan }}" name="nama_pimpinan"
+                <div class="tempat_lahir space-y-2 {{ $data->jenis != 'perorangan' ? 'hidden' : '' }}">
+                    <p>Tempat Lahir <label class="text-red-700">*</label></p>
+                    <input type="text" value="{{ $data->tempat_lahir }}" name="tempat_lahir"
                         class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
-                    @error('nama_pimpinan')
+                    @error('tempat_lahir')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
 
-                <div class="nama-cp {{ is_null($data->user->nik) ? '' : 'hidden' }} space-y-2">
-                    <p>Nama CP <label class="text-red-700"> *</label></p>
-                    <input type="text" value="{{ $data->user->nama_cp }}" name="nama_cp"
+                <div class="tanggal_lahir space-y-2 {{ $data->jenis != 'perorangan' ? 'hidden' : '' }}">
+                    <p>Tanggal Lahir <label class="text-red-700">*</label></p>
+                    <input type="date" value="{{ $data->tanggal_lahir }}" name="tanggal_lahir"
                         class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
-                    @error('nama_cp')
+                    @error('tanggal_lahir')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
 
-                <div class="telp-cp {{ is_null($data->user->nik) ? '' : 'hidden' }} space-y-2">
-                    <p>Telp CP <label class="text-red-700"> *</label></p>
-                    <input type="text" value="{{ $data->user->telp_cp }}" name="telp_cp"
+                <div class="space-y-2">
+                    <p class="email">Email <label class="text-red-700"> *</label></p>
+                    <input type="text" value="{{ $data->user->email }}" name="email"
                         class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
-                    @error('telp_cp')
+                    @error('email')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="space-y-2">
+                    <p>Pemilik Rekening <label class="text-red-700">*</label></p>
+                    <input type="text" value="{{ $data->pemilik_rekening }}" name="pemilik_rekening"
+                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4" required>
+                    @error('pemilik_rekening')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="space-y-2">
+                    <p>Bank <label class="text-red-700">*</label></p>
+                    <select name="bank" class="jenis w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4" required>
+                        <option value="{{ $data->bank }}" selected>{{ ucwords($data->bank) }}</option>
+                        <option disabled>=======================</option>
+                        @foreach ($banks as $bank)
+                            <option value="{{ $bank }}">
+                                {{ ucfirst($bank) }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('bank')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="space-y-2">
+                    <p>No. Rekening <label class="text-red-700">*</label></p>
+                    <input type="number" value="{{ $data->no_rek }}" name="no_rek"
+                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4" required>
+                    @error('no_rek')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="space-y-2">
+                    <p>Asnaf <label class="text-red-700">*</label></p>
+                    <select name="asnaf" class="jenis w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4" required>
+                        <option value="{{ $data->asnaf }}" selected>{{ ucwords($data->asnaf) }}</option>
+                        <option disabled>=======================</option>
+                        @foreach ($asnafs as $asnaf)
+                            <option value="{{ $asnaf }}">
+                                {{ ucfirst($asnaf) }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('asnaf')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
+
+                {{-- Perorangan --}}
+                <div class="nik space-y-2 {{ $data->jenis != 'perorangan' ? 'hidden' : '' }}">
+                    <p>NIK<label class="text-red-700">*</label></p>
+                    <input type="number" value="{{ $data->user->nik }}" name="nik"
+                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
+                    @error('nik')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="space-y-2 {{ $data->jenis != 'perorangan' ? 'hidden' : '' }}">
+                    <p>Pekerjaan <label class="text-red-700">*</label></p>
+                    <select name="pekerjaan" class="jenis w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
+                        <option value="{{ $data->pekerjaan }}" selected>{{ ucwords($data->pekerjaan) }}</option>
+                        <option disabled>=======================</option>
+                        @foreach ($pekerjaans as $pekerjaan)
+                            <option value="{{ $pekerjaan }}">
+                                {{ ucfirst($pekerjaan) }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('pekerjaan')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+                {{-- End Perorangan --}}
+
+                {{-- Kelompok --}}
+                <div class="space-y-2 {{ $data->jenis != 'perorangan' ? '' : 'hidden' }}">
+                    <p>Jumlah Anggota <label class="text-red-700">*</label></p>
+                    <input type="number" value="{{ $data->jumlah_anggota }}" name="jumlah_anggota"
+                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
+                    @error('jumlah_anggota')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
                 {{-- End Lembaga --}}
 
-                <div class="jenis-kelamin space-y-2 {{ is_null($data->user->nik) ? 'hidden' : '' }}">
+                <div class="jenis_kelamin space-y-2 {{ $data->jenis != 'perorangan' ? 'hidden' : '' }}">
                     <p>Jenis Kelamin <label class="text-red-700">*</label></p>
                     <select name="jenis_kelamin" class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
-                        <option selected value="{{ $data->user->jenis_kelamin }}">
-                            {{ ucwords($data->user->jenis_kelamin) }}</option>
-                        <option disabled>=================</option>
-                        <option value="laki laki">Laki
+                        <option value="laki laki" {{ $data->user->jenis_kelamin == 'laki laki' ? 'selected' : '' }}>Laki
                             Laki</option>
-                        <option value="perempuan">
+                        <option value="perempuan" {{ $data->jenis_kelamin == 'perempuan' ? 'selected' : '' }}>
                             Perempuan</option>
                     </select>
                     @error('jenis_kelamin')
@@ -130,7 +173,7 @@
                     @enderror
                 </div>
 
-                <div class="telepon space-y-2 {{ is_null($data->user->nik) ? 'hidden' : '' }}">
+                <div class="telepon space-y-2">
                     <p>Telepon <label class="text-red-700">*</label></p>
                     <input type="number" value="{{ $data->user->telepon }}" name="telepon"
                         class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
@@ -139,7 +182,7 @@
                     @enderror
                 </div>
 
-                <div class="alamat space-y-2 col-span-2">
+                <div class="alamat space-y-2 {{ $data->jenis != 'perorangan' ? 'col-span-2' : '' }}">
                     <p>Alamat <label class="text-red-700">*</label></p>
                     <input type="text" value="{{ $data->user->alamat }}" name="alamat"
                         class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">

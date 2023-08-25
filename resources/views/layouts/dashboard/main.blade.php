@@ -14,6 +14,25 @@
 </head>
 
 <body>
+    <style>
+        @keyframes slideRight {
+            0% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .animated-element {
+            animation: slideRight 3s ease-in-out forwards;
+        }
+    </style>
+
+    @include('layouts.dashboard.alert')
     <div class="flex">
         @include('layouts.dashboard.sidebar')
         <div class="w-[77%]">
@@ -26,6 +45,14 @@
         </div>
     </div>
 </body>
+
+<script>
+    const alert = document.getElementById("alert");
+
+    setTimeout(() => {
+        alert.remove();
+    }, 3000);
+</script>
 
 @stack('scripts')
 

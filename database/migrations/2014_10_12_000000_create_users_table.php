@@ -15,15 +15,11 @@ return new class extends Migration {
             $table->string('nama');
             $table->enum('role', ['admin', 'muzakki', 'mustahiq'])->default('muzakki');
             $table->string('email')->unique();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->string('nik')->nullable();
             $table->enum('jenis_kelamin', ['laki laki', 'perempuan'])->nullable();
             $table->string('telepon')->nullable();
             $table->text('alamat')->nullable();
-            $table->string('nama_pimpinan')->nullable();
-            $table->string('nik_pimpinan')->nullable();
-            $table->string('nama_cp')->nullable();
-            $table->string('telp_cp')->nullable();
             $table->timestamps();
         });
     }

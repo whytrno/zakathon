@@ -108,10 +108,10 @@
             class="{{ $menuActive['user'] ? '' : 'hidden' }} user-menu flex justify-between items-center cursor-pointer px-20 group">
             <p class="font-bold text-black/70 group-hover:text-[#1D8E48]">Muzakki</p>
         </a>
-        <div
+        <a href="{{ route('mustahiq.index') }}"
             class="{{ $menuActive['user'] ? '' : 'hidden' }} user-menu flex justify-between items-center cursor-pointer px-20 group">
             <p class="font-bold text-black/70 group-hover:text-[#1D8E48]">Mustahiq</p>
-        </div>
+        </a>
         <a href="{{ route('logout') }}" class="flex gap-3 items-center px-6 cursor-pointer group">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                 class="w-8 h-8 group-hover:stroke-[#1D8E48] group-hover:fill-[#1D8E48] stroke-[#014F31] fill-[#014F31]">

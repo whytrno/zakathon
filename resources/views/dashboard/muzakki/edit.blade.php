@@ -39,7 +39,7 @@
                 </div>
 
                 {{-- Perorangan --}}
-                <div class="nik space-y-2 {{ is_null($data->user->nik) ? 'hidden' : '' }}">
+                <div class="nik space-y-2 {{ $data->jenis != 'perorangan' ? 'hidden' : '' }}">
                     <p>NIK <label class="text-red-700">*</label></p>
                     <input type="number" value="{{ $data->user->nik }}" name="nik"
                         class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
@@ -50,7 +50,7 @@
                 {{-- End Perorangan --}}
 
                 {{-- Lembaga --}}
-                <div class="nik-pimpinan {{ is_null($data->user->nik) ? '' : 'hidden' }} space-y-2">
+                <div class="nik-pimpinan {{ $data->jenis != 'perorangan' ? '' : 'hidden' }} space-y-2">
                     <p>NIK Pimpinan <label class="text-red-700">*</label></p>
                     <input type="number" value="{{ $data->user->nik_pimpinan }}" name="nik_pimpinan"
                         class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
@@ -86,7 +86,7 @@
                 </div>
 
                 {{-- Lembaga --}}
-                <div class="nama-pimpinan {{ is_null($data->user->nik) ? '' : 'hidden' }} space-y-2">
+                <div class="nama-pimpinan {{ $data->jenis != 'perorangan' ? '' : 'hidden' }} space-y-2">
                     <p>Nama Pimpinan <label class="text-red-700"> *</label></p>
                     <input type="text" value="{{ $data->user->nama_pimpinan }}" name="nama_pimpinan"
                         class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
@@ -95,7 +95,7 @@
                     @enderror
                 </div>
 
-                <div class="nama-cp {{ is_null($data->user->nik) ? '' : 'hidden' }} space-y-2">
+                <div class="nama-cp {{ $data->jenis != 'perorangan' ? '' : 'hidden' }} space-y-2">
                     <p>Nama CP <label class="text-red-700"> *</label></p>
                     <input type="text" value="{{ $data->user->nama_cp }}" name="nama_cp"
                         class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
@@ -104,7 +104,7 @@
                     @enderror
                 </div>
 
-                <div class="telp-cp {{ is_null($data->user->nik) ? '' : 'hidden' }} space-y-2">
+                <div class="telp-cp {{ $data->jenis != 'perorangan' ? '' : 'hidden' }} space-y-2">
                     <p>Telp CP <label class="text-red-700"> *</label></p>
                     <input type="text" value="{{ $data->user->telp_cp }}" name="telp_cp"
                         class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
@@ -114,7 +114,7 @@
                 </div>
                 {{-- End Lembaga --}}
 
-                <div class="jenis-kelamin space-y-2 {{ is_null($data->user->nik) ? 'hidden' : '' }}">
+                <div class="jenis-kelamin space-y-2 {{ $data->jenis != 'perorangan' ? 'hidden' : '' }}">
                     <p>Jenis Kelamin <label class="text-red-700">*</label></p>
                     <select name="jenis_kelamin" class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
                         <option selected value="{{ $data->user->jenis_kelamin }}">
@@ -130,7 +130,7 @@
                     @enderror
                 </div>
 
-                <div class="telepon space-y-2 {{ is_null($data->user->nik) ? 'hidden' : '' }}">
+                <div class="telepon space-y-2 {{ $data->jenis != 'perorangan' ? 'hidden' : '' }}">
                     <p>Telepon <label class="text-red-700">*</label></p>
                     <input type="number" value="{{ $data->user->telepon }}" name="telepon"
                         class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
@@ -139,7 +139,7 @@
                     @enderror
                 </div>
 
-                <div class="alamat space-y-2 col-span-2">
+                <div class="alamat space-y-2 {{ $data->jenis != 'perorangan' ? 'col-span-2' : '' }}">
                     <p>Alamat <label class="text-red-700">*</label></p>
                     <input type="text" value="{{ $data->user->alamat }}" name="alamat"
                         class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">

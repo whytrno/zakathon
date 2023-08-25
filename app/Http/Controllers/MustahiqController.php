@@ -3,10 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mustahiq;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MustahiqController extends Controller
 {
+    public $banks, $asnafs, $pekerjaans;
+
+    public function __construct()
+    {
+        $this->banks = ['BCA', 'BRI', 'Mandiri', 'BSI'];
+        $this->asnafs = ['fakir', 'miskin', 'amil', 'mualaf', 'riqob', 'gharim', 'fisabilillah', 'ibnu sabil'];
+        $this->pekerjaans = ['wirausaha', 'mahasiswa', 'karyawan', 'buruh'];
+    }
+
     public function index()
     {
         $datas = Mustahiq::with('user')->get();
@@ -16,75 +27,93 @@ class MustahiqController extends Controller
 
     public function create()
     {
-        return view('dashboard.mustahiq.create');
+        $banks = $this->banks;
+        $asnafs = $this->asnafs;
+        $pekerjaans = $this->pekerjaans;
+
+        return view('dashboard.mustahiq.create', compact('banks', 'asnafs', 'pekerjaans'));
     }
 
     public function edit($id)
     {
+        $banks = $this->banks;
+        $asnafs = $this->asnafs;
+        $pekerjaans = $this->pekerjaans;
+
         $data = Mustahiq::with('user')->findOrFail($id);
 
-        return view('dashboard.mustahiq.edit', compact('data'));
+        return view('dashboard.mustahiq.edit', compact('data', 'banks', 'asnafs', 'pekerjaans'));
     }
 
     public function store(Request $request)
     {
-        $request['role'] = 'muzakki';
+        $request['role'] = 'mustahiq';
 
         $request->validate([
+            'jenis' => 'required',
             'nama' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'nik' => 'nullable|string|min:16|unique:users,nik',
-            'jenis_kelamin' => 'nullable|in:laki laki,perempuan',
-            'telepon' => 'nullable|string|min:10',
-            'alamat' => 'nullable|string',
-            'nama_pimpinan' => 'nullable|string',
-            'nik_pimpinan' => 'nullable|string|min:16|unique:users,nik_pimpinan',
-            'nama_cp' => 'nullable|string',
-            'telp_cp' => 'nullable|string|min:10',
-            'jenis' => 'nullable|in:perorangan,lembaga non upz,lembaga upz',
-            'password' => 'required|min:8',
+            'tempat_lahir' => 'nullable|string',
+            'tanggal_lahir' => 'nullable|date',
+            'pemilik_rekening' => 'required|string',
+            'bank' => 'required|string',
+            'no_rek' => 'required|numeric',
+            'asnaf' => 'required|string',
+            'nik' => 'nullable|string',
+            'pekerjaan' => 'nullable|string',
+            'jumlah_anggota' => 'nullable|numeric',
+            'jenis_kelamin' => 'nullable|string',
+            'telepon' => 'required|string|min:10',
+            'alamat' => 'required|string',
+        ]);
+        $request->merge([
+            'nim' => rand(100000000000, 999999999999),
+            'password' => bcrypt($request->nik),
         ]);
 
-        $user = User::create($request->all());
+        try {
+            $user = User::create($request->all());
+            $user->mustahiq()->create($request->all());
 
-        Mustahiq::create([
-            'user_id' => $user->id,
-            'npwz' => rand(100000000000, 999999999999),
-            'jenis' => $request->jenis,
-        ]);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Gagal menambahkan data');
+        }
 
         return redirect()->route('mustahiq.index')->with('success', 'Berhasil menambahkan data');
     }
 
     public function update(Request $request, $id)
     {
-        $muzakki = Mustahiq::findOrFail($id);
+        $mustahiq = Mustahiq::findOrFail($id);
 
         $request->validate([
+            'jenis' => 'required',
             'nama' => 'required|string|max:255',
-            'nik' => 'nullable|string|min:16|unique:users,nik,' . $muzakki->user_id,
-            'jenis_kelamin' => 'nullable|in:laki laki,perempuan',
-            'telepon' => 'nullable|string|min:10',
-            'alamat' => 'nullable|string',
-            'nama_pimpinan' => 'nullable|string',
-            'nik_pimpinan' => 'nullable|string|min:16|unique:users,nik_pimpinan,' . $muzakki->user_id,
-            'nama_cp' => 'nullable|string',
-            'telp_cp' => 'nullable|string|min:10',
-            'jenis' => 'nullable|in:perorangan,lembaga non upz,lembaga upz',
-            'password' => 'nullable|min:8',
+            'tempat_lahir' => 'nullable|string',
+            'tanggal_lahir' => 'nullable|date',
+            'pemilik_rekening' => 'required|string',
+            'bank' => 'required|string',
+            'no_rek' => 'required|numeric',
+            'asnaf' => 'required|string',
+            'nik' => 'nullable|string',
+            'pekerjaan' => 'nullable|string',
+            'jumlah_anggota' => 'nullable|numeric',
+            'jenis_kelamin' => 'nullable|string',
+            'telepon' => 'required|string|min:10',
+            'alamat' => 'required|string',
         ]);
 
-        $user = User::findOrFail($muzakki->user_id);
+        try {
+            $user = User::findOrFail($mustahiq->user_id);
 
-        if ($request->password == '' | $request->password == null) {
-            $user->update($request->except('password'));
-        } else {
-            $user->update($request->all());
+            $user->mustahiq->update($request->all());
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Gagal menambahkan data');
         }
-
-        $user->muzakki->update([
-            'jenis' => $request->jenis,
-        ]);
 
         return redirect()->route('mustahiq.index')->with('success', 'Berhasil mengubah data');
     }
@@ -93,8 +122,8 @@ class MustahiqController extends Controller
     {
         $data = User::findOrFail($id);
 
-        if ($data->muzakki) {
-            $data->muzakki->delete();
+        if ($data->mustahiq) {
+            $data->mustahiq->delete();
         }
 
         $data->delete();

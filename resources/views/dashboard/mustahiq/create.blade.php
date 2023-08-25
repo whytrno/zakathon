@@ -2,14 +2,12 @@
 
 @section('content')
     <div class="flex justify-between items-center">
-        <a href="{{ route('muzakki.index') }}"
+        <a href="{{ route('mustahiq.index') }}"
             class="flex gap-2 hover:bg-[#1D8E48] items-center bg-[#014F31] rounded-2xl p-2 px-4 text-white fill-white stroke-white">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                 class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
-
-
             Kembali
         </a>
     </div>
@@ -19,64 +17,22 @@
             <h2 class="text-xl font-semibold">Tambah Data Muzakki</h2>
         </div>
 
-        <form action="{{ route('muzakki.store') }}" class="space-y-6" method="POST">
+        <form action="{{ route('mustahiq.store') }}" class="space-y-6" method="POST">
             @csrf
             <div class="grid grid-cols-2 gap-5">
                 <div class="space-y-2">
-                    <p>Jenis Muzakki <label class="text-red-700">*</label></p>
-                    <select onchange="toggleJenis('create', null)" name="jenis"
+                    <p>Jenis Mustahiq <label class="text-red-700">*</label></p>
+                    <select onchange="toggleJenis()" name="jenis"
                         class="jenis w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4" required>
                         <option value="perorangan" {{ old('jenis') == 'perorangan' ? 'selected' : '' }}>Perorangan
                         </option>
-                        <option value="lembaga upz" {{ old('jenis') == 'lembaga upz' ? 'selected' : '' }}>Lembaga
-                            UPZ</option>
-                        <option value="lembaga non upz" {{ old('jenis') == 'lembaga non upz' ? 'selected' : '' }}>
-                            Lembaga non UPZ</option>
+                        <option value="lembaga upz" {{ old('jenis') == 'kelompok' ? 'selected' : '' }}>Kelompok</option>
                     </select>
                     @error('jenis')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
 
-                {{-- Perorangan --}}
-                <div class="nik space-y-2">
-                    <p>NIK <label class="text-red-700">*</label></p>
-                    <input type="number" value="{{ old('nik') }}" name="nik"
-                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
-                    @error('nik')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-                </div>
-                {{-- End Perorangan --}}
-
-                {{-- Lembaga --}}
-                <div class="nik-pimpinan hidden space-y-2">
-                    <p>NIK Pimpinan <label class="text-red-700">*</label></p>
-                    <input type="number" value="{{ old('nik_pimpinan') }}" name="nik_pimpinan"
-                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
-                    @error('nik')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-                </div>
-                {{-- End Lembaga --}}
-
-                <div class="space-y-2">
-                    <p>Email <label class="text-red-700">*</label></p>
-                    <input type="email" value="{{ old('email') }}" name="email"
-                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
-                    @error('email')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="space-y-2">
-                    <p>Password <label class="text-red-700">*</label></p>
-                    <input type="password" value="{{ old('password') }}" name="password"
-                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
-                    @error('password')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-                </div>
                 <div class="space-y-2">
                     <p class="nama">Nama <label class="text-red-700"> *</label></p>
                     <input type="text" value="{{ old('nama') }}" name="nama"
@@ -86,36 +42,117 @@
                     @enderror
                 </div>
 
-                {{-- Lembaga --}}
-                <div class="nama-pimpinan hidden space-y-2">
-                    <p>Nama Pimpinan <label class="text-red-700"> *</label></p>
-                    <input type="text" value="{{ old('nama_pimpinan') }}" name="nama_pimpinan"
+                <div class="tempat_lahir space-y-2">
+                    <p>Tempat Lahir <label class="text-red-700">*</label></p>
+                    <input type="text" value="{{ old('tempat_lahir') }}" name="tempat_lahir"
                         class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
-                    @error('nama_pimpinan')
+                    @error('tempat_lahir')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
 
-                <div class="nama-cp hidden space-y-2">
-                    <p>Nama CP <label class="text-red-700"> *</label></p>
-                    <input type="text" value="{{ old('nama_cp') }}" name="nama_cp"
+                <div class="tanggal_lahir space-y-2">
+                    <p>Tanggal Lahir <label class="text-red-700">*</label></p>
+                    <input type="date" value="{{ old('tanggal_lahir') }}" name="tanggal_lahir"
                         class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
-                    @error('nama_cp')
+                    @error('tanggal_lahir')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
 
-                <div class="telp-cp hidden space-y-2">
-                    <p>Telp CP <label class="text-red-700"> *</label></p>
-                    <input type="text" value="{{ old('telp_cp') }}" name="telp_cp"
+                <div class="space-y-2">
+                    <p class="email">Email <label class="text-red-700"> *</label></p>
+                    <input type="text" value="{{ old('email') }}" name="email"
                         class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
-                    @error('telp_cp')
+                    @error('email')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="space-y-2">
+                    <p>Pemilik Rekening <label class="text-red-700">*</label></p>
+                    <input type="text" value="{{ old('pemilik_rekening') }}" name="pemilik_rekening"
+                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4" required>
+                    @error('pemilik_rekening')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="space-y-2">
+                    <p>Bank <label class="text-red-700">*</label></p>
+                    <select name="bank" class="jenis w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4" required>
+                        @foreach ($banks as $bank)
+                            <option value="{{ $bank }}" {{ old('bank') == $bank ? 'selected' : '' }}>
+                                {{ ucfirst($bank) }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('bank')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="space-y-2">
+                    <p>No. Rekening <label class="text-red-700">*</label></p>
+                    <input type="number" value="{{ old('no_rek') }}" name="no_rek"
+                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4" required>
+                    @error('no_rek')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="space-y-2">
+                    <p>Asnaf <label class="text-red-700">*</label></p>
+                    <select name="asnaf" class="jenis w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4" required>
+                        @foreach ($asnafs as $asnaf)
+                            <option value="{{ $asnaf }}" {{ old('asnaf') == $asnaf ? 'selected' : '' }}>
+                                {{ ucfirst($asnaf) }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('asnaf')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
+
+                {{-- Perorangan --}}
+                <div class="nik space-y-2">
+                    <p>NIK<label class="text-red-700">*</label></p>
+                    <input type="number" value="{{ old('nik') }}" name="nik"
+                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
+                    @error('nik')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="space-y-2">
+                    <p>Pekerjaan <label class="text-red-700">*</label></p>
+                    <select name="pekerjaan" class="jenis w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
+                        @foreach ($pekerjaans as $pekerjaan)
+                            <option value="{{ $pekerjaan }}" {{ old('pekerjaan') == $pekerjaan ? 'selected' : '' }}>
+                                {{ ucfirst($pekerjaan) }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('pekerjaan')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+                {{-- End Perorangan --}}
+
+                {{-- Kelompok --}}
+                <div class="space-y-2">
+                    <p>Jumlah Anggota <label class="text-red-700">*</label></p>
+                    <input type="number" value="{{ old('jumlah_anggota') }}" name="jumlah_anggota"
+                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
+                    @error('jumlah_anggota')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
                 {{-- End Lembaga --}}
 
-                <div class="jenis-kelamin space-y-2">
+                <div class="jenis_kelamin space-y-2">
                     <p>Jenis Kelamin <label class="text-red-700">*</label></p>
                     <select name="jenis_kelamin" class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
                         <option value="laki laki" {{ old('jenis_kelamin') == 'laki laki' ? 'selected' : '' }}>Laki
@@ -160,26 +197,18 @@
         function toggleJenis() {
             if ($('.jenis').val() == 'perorangan') {
                 $('.nik').removeClass('hidden');
-                $('.nama').html('Nama <label class="text-red-700"> *</label>');
-                $('.jenis-kelamin').removeClass('hidden');
-                $('.telepon').removeClass('hidden');
-
-                $('.nik-pimpinan').addClass('hidden');
-                $('.nama-pimpinan').addClass('hidden');
-                $('.nama-cp').addClass('hidden');
-                $('.telp-cp').addClass('hidden');
-                $('.alamat').removeClass('col-span-2');
+                $('.jumlah_anggota').removeClass('hidden');
+                $('.pekerjaan').removeClass('hidden');
+                $('.tempat_lahir').removeClass('hidden');
+                $('.tanggal_lahir').removeClass('hidden');
+                $('.jenis_kelamin').removeClass('hidden');
             } else {
                 $('.nik').addClass('hidden');
-                $('.nama').html('Nama Lembaga <label class="text-red-700"> *</label>');
-                $('.jenis-kelamin').addClass('hidden');
-                $('.telepon').addClass('hidden');
-
-                $('.nik-pimpinan').removeClass('hidden');
-                $('.nama-pimpinan').removeClass('hidden');
-                $('.nama-cp').removeClass('hidden');
-                $('.telp-cp').removeClass('hidden');
-                $('.alamat').addClass('col-span-2');
+                $('.jumlah_anggota').removeClass('hidden');
+                $('.pekerjaan').addClass('hidden');
+                $('.tempat_lahir').addClass('hidden');
+                $('.tanggal_lahir').addClass('hidden');
+                $('.jenis_kelamin').addClass('hidden');
             }
         }
     </script>
