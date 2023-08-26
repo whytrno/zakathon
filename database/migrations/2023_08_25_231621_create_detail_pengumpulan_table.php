@@ -23,6 +23,8 @@ class CreateDetailPengumpulanTable extends Migration
             $table->timestamps();
 
             $table->foreign('pengumpulan_id')->references('id')->on('pengumpulan');
+            $table->foreign('muzakki_id')->references('id')->on('muzakkis');
+            $table->foreign('rekening_id')->references('id')->on('rekenings');
         });
     }
 

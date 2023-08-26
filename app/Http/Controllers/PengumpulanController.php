@@ -17,9 +17,10 @@ class PengumpulanController extends Controller
     }
 
 
-    public function detail()
+    public function detail($id)
     {
-        $datas = DetailPengumpulan::all();
+        $datas = DataPengumpulan::where('id', $id)
+            ->with('detailPengumpulan')->first();
 
         $dataByRole = [
             'perorangan' => [],
@@ -34,14 +35,12 @@ class PengumpulanController extends Controller
             $dataByRole[$role][$user_id] = $muzakki->user_id;
         }
 
-
-
+//        dd($dataByRole);
 
 
         return view('dashboard.pengumpulan.detail', compact('datas', 'dataByRole'));
 
     }
-
 
 
 }

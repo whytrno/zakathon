@@ -7,22 +7,10 @@ use App\Models\Base\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DetailPengumpulan extends Model
+class DetailPengumpulan extends BaseModel
 {
     protected $table = 'detail_pengumpulan';
 
-    protected $fillable = [
-        'pengumpulan_id',
-        'muzakki_id',
-        'rekening_id',
-        'no_bukti',
-        'jenis_dana',
-        'dalam_neraca',
-        'jumlah',
-        'via',
-        'status',
-        'bukti_pembayaran',
-    ];
 
     public function pengumpulan()
     {

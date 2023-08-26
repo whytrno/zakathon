@@ -15,6 +15,7 @@ class DataPengumpulan extends Model
     {
         return $this->belongsTo(User::class);
     }
+
     protected $fillable = [
         'bulan',
         'tahun',
