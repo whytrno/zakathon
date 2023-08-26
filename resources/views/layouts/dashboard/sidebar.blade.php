@@ -54,16 +54,19 @@
             <p class="font-bold text-black/70 group-hover:text-[#1D8E48]">Pengumpulan</p>
         </div>
 
-        <div class="flex gap-3 items-center px-6 cursor-pointer group">
+        <a href="{{ route('pendistribusian.index') }}"
+            class="flex gap-3 items-center px-6 cursor-pointer {{ $menuActive['pendistribusian'] ? 'items-center hover:bg-[#1D8E48] cursor-pointer bg-[#014F31] px-6 py-3 rounded-full' : 'group' }}">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                class="w-8 h-8 group-hover:stroke-[#1D8E48] group-hover:fill-[#1D8E48] stroke-[#014F31] fill-[#014F31]">
+                class="w-8 h-8 {{ $menuActive['pendistribusian'] ? 'stroke-white fill-white' : 'group-hover:stroke-[#1D8E48] group-hover:fill-[#1D8E48] stroke-[#014F31] fill-[#014F31]' }}">
                 <path fill-rule="evenodd"
                     d="M15.75 4.5a3 3 0 11.825 2.066l-8.421 4.679a3.002 3.002 0 010 1.51l8.421 4.679a3 3 0 11-.729 1.31l-8.421-4.678a3 3 0 110-4.132l8.421-4.679a3 3 0 01-.096-.755z"
                     clip-rule="evenodd" />
             </svg>
 
-            <p class="font-bold text-black/70 group-hover:text-[#1D8E48]">Pendistribusian</p>
-        </div>
+            <p
+                class="font-bold {{ $menuActive['pendistribusian'] ? 'text-white' : 'text-black/70 group-hover:text-[#1D8E48]' }}">
+                Pendistribusian</p>
+        </a>
 
         <div class="flex gap-3 items-center px-6 cursor-pointer group">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"

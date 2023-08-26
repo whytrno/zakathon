@@ -14,7 +14,7 @@
 
     <div class="bg-white shadow-xl rounded-[12px] p-7 space-y-5 border border-gray-300">
         <div class="border-b-2 border-gray-800 flex justify-between pb-2">
-            <h2 class="text-xl font-semibold">Ubah Data Muzakki</h2>
+            <h2 class="text-xl font-semibold">Ubah Data Mustahiq</h2>
         </div>
 
         <form action="{{ route('mustahiq.update', $data->id) }}" class="space-y-6" method="POST">

@@ -77,7 +77,7 @@ class MustahiqController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->back()->with('error', 'Gagal menambahkan data');
+            return redirect()->back()->with('error', 'Gagal menambahkan data')->withInput();
         }
 
         return redirect()->route('mustahiq.index')->with('success', 'Berhasil menambahkan data');
@@ -129,5 +129,24 @@ class MustahiqController extends Controller
         $data->delete();
 
         return redirect()->back()->with('success', 'Berhasil menghapus data');
+    }
+
+    public function searchJson($query)
+    {
+        $datas = Mustahiq::with('user')
+            ->where('nim', 'like', "%$query%")
+            ->orWhereHas('user', function ($q) use ($query) {
+                $q->where('nama', 'like', "%$query%");
+            })
+            ->get();
+
+        return response()->json($datas);
+    }
+
+    public function detailJson($id)
+    {
+        $data = Mustahiq::where('id', $id)->with('user')->first();
+
+        return response()->json($data);
     }
 }

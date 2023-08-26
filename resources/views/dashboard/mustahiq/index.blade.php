@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="flex justify-between items-center">
-        <h1 class="font-bold text-2xl text-[#014F31]">Data Muzakki</h1>
+        <h1 class="font-bold text-2xl text-[#014F31]">Data Mustahiq</h1>
         <a href="{{ route('mustahiq.create') }}"
             class="flex gap-2 hover:bg-[#1D8E48] items-center bg-[#014F31] rounded-2xl p-2 px-4 text-white fill-white stroke-white">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
