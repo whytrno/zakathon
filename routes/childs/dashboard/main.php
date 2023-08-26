@@ -10,4 +10,8 @@ Route::prefix('dashboard')->group(function () {
         include_once "muzakki.php";
         include_once "mustahiq.php";
     });
+    
+    Route::prefix('pendistribusian')->group(function(){
+        include_once "pendistribusian.php";
+    });
 });
