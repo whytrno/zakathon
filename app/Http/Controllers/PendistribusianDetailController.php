@@ -41,7 +41,7 @@ class PendistribusianDetailController extends Controller
 
     public function bulanToString($bulan)
     {
-        $bulan = (int) $bulan;
+        $bulan = (int)$bulan;
         $bulan = $this->bulan[$bulan];
         return $bulan;
     }
