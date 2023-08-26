@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="flex justify-between items-center">
-        <h1 class="font-bold text-2xl text-[#014F31]">Data Muzakki</h1>
+        <h1 class="font-bold text-2xl text-[#014F31]">Data Pendistribusian</h1>
         <a href="{{ route('pendistribusian.create') }}"
            class="flex gap-2 hover:bg-[#1D8E48] items-center bg-[#014F31] rounded-2xl p-2 px-4 text-white fill-white stroke-white">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -73,6 +73,7 @@
                         {{ $data->persenRealisasi() }}%
                     </td>
                     <td class="px-6 py-4 text-center">
+                        <p class="py-1 px-3 bg-purple-200 text-black/70 rounded-xl font-semibold">Belum Diajukan</p>
                     </td>
                     <td class="px-6 py-4 flex justify-center gap-2">
                         <a href="{{ route('pendistribusian.detail.index', $data->id) }}"
