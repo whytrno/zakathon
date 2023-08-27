@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="flex flex-col justify-center items-center h-full space-y-[40px] mb-40 mt-10">
-        <div class="lg:w-2/5 px-20 lg:px-0 space-y-4">
+        <div class="lg:w-2/5 lg:px-20 px-10 w-full lg:px-0 space-y-4">
             <div class="flex justify-center">
                 <img src="{{ asset('images/banner.png') }}" alt="banner">
             </div>

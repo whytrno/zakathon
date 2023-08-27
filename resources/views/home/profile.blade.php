@@ -2,16 +2,16 @@
 
 @section('content')
     <div class="flex flex-col justify-center items-center h-full space-y-[40px] mb-40 mt-10">
-        <div class="lg:w-2/5 px-20 lg:px-0">
+        <div class="lg:w-2/5 w-full lg:px-20 px-10">
             <h1 class="text-xl font-bold pb-2 border-b-2 w-full">Profile</h1>
 
             <div class="flex gap-10 items-center py-5 border-b-2">
                 @if (auth()->user()->jenis_kelamin == 'laki laki')
                     <img src="{{ asset('images/man-default-profile-picture.jpg') }}" alt=""
-                         class="w-32 h-32 rounded-full object-contain bg-gray-200">
+                         class="lg:w-32 lg:h-32 w-20 h-20 rounded-full object-contain bg-gray-200">
                 @else
                     <img src="{{ asset('images/woman-default-profile-picture.jpg') }}" alt=""
-                         class="w-32 h-32 rounded-full object-contain bg-gray-200">
+                         class="lg:w-32 lg:h-32 w-20 h-20 rounded-full object-contain bg-gray-200">
                 @endif
 
                 <div class="flex flex-col gap-1">
@@ -29,7 +29,7 @@
                                   d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
                                   clip-rule="evenodd"/>
                         </svg>
-                        <h1 class="text-xl font-bold">Akun Saya</h1>
+                        <h1 class="lg:text-xl font-bold">Akun Saya</h1>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                          stroke="currentColor" class="w-6 h-6">
@@ -46,7 +46,7 @@
                           d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"/>
                 </svg>
 
-                <p class="text-xl font-bold">Keluar</p>
+                <p class="lg:text-xl font-bold">Keluar</p>
             </a>
         </div>
     </div>
