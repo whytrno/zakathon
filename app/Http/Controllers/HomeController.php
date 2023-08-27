@@ -2,66 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Muzakki;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
+    public $jenis_dana;
+
+    public function __construct()
+    {
+        $this->jenis_dana = ['zakat', 'infak/sedekah tidak terikat', 'infak/sedekah terikat', 'dskl', 'csr', 'zakat fitrah'];
+    }
+
     public function index()
     {
         $check = false;
         $user = User::where('id', Auth::user()->id)->with('muzakki')->first();
-        $getJenis = $user->muzakki->jenis;
+        $jenis_dana = $this->jenis_dana;
 
-        $exceptAttributeForPerorangan = [
-            'nama_pimpinan',
-            'nik_pimpinan',
-            'nama_cp',
-            'telp_cp'
-        ];
-
-        $tesTrue = [];
-        $tesFalse = [];
-
-        if($getJenis == 'perorangan'){
-            foreach($user->getAttributes() as $index => $atribute){
-                // jika atribute kecuali yang ada di array $exceptAttributeForPerorangan itu ada yang null, maka $check = false
-                if(in_array($index, $exceptAttributeForPerorangan)){
-                    if($user->$atribute === null){
-                        $check = false;
-                        array_push($tesTrue, $index);
-                    }else{
-                        $check = true;
-                        array_push($tesFalse, $index);
-                    }
-                }
-            }
-        }
-        // dd($tesTrue, $tesFalse);
-
-        // $requiredAttributes = [
-        //     'nama_pimpinan',
-        //     'nik_pimpinan',
-        //     'nama_cp',
-        //     'telp_cp'
-        // ];
-
-        // if ($getJenis != 'perorangan') {
-        //     foreach ($requiredAttributes as $attribute) {
-        //         if ($user->$attribute === null) {
-        //             $check = false;
-        //             break;
-        //         } else {
-        //             $check = true;
-        //         }
-        //     }
-        // } else {
-        //     $check = false;
-        // }
-
-        // dd($check);
-
-
-        return view('home.index', compact('check'));
+        return view('home.index', compact('check', 'user', 'jenis_dana'));
     }
 
     public function profile()
@@ -73,37 +34,50 @@ class HomeController extends Controller
     {
         return view('home.history');
     }
+
     public function editProfile()
     {
-        return view('home.edit-profile');
+        $data = User::where('id', Auth::user()->id)->with('muzakki')->first();
+
+        return view('home.edit-profile', compact('data'));
     }
 
-    public function updateProfile(Request $request){
-        // dd($request->all());
-
-
+    public function updateProfile(Request $request)
+    {
         $auth = Auth::user();
         $user = User::findOrFail($auth->id);
 
         $request->validate([
             'nama' => 'nullable|string|max:255',
-            'email' => 'nullable|email|unique:users,email,'.$auth->id,
-            'nik' => 'nullable|string|min:16|unique:users,nik,'.$auth->id,
-            'jenis_kelamin' => 'nullable|in:laki-laki,perempuan',
+            'email' => 'nullable|email|unique:users,email,' . $auth->id,
+            'nik' => 'nullable|string|min:16|unique:users,nik,' . $auth->id,
+            'jenis' => 'nullable|string',
+            'alamat' => 'nullable|string',
+            'jenis_kelamin' => 'nullable|in:laki laki,perempuan',
             'telepon' => 'nullable|string|min:10',
             'password' => 'nullable|string',
         ]);
-        if($request->password == '' | $request->password == null){
-            $user->update($request->only('nama','email','nik','jenis_kelamin','telepon'));
-        }else{
-            $user->update($request->only('nama','email','nik','jenis_kelamin','telepon','password'));
 
+        if ($request->password == '' | $request->password == null) {
+            $user->update($request->except('password'));
+        } else {
+            $user->update($request->all());
         }
 
-        $user->muzakki->update([
-            'jenis' => $request->jenis,
-        ]);
-        return redirect()->back()->with('success','Berhasil mengubah data');
+        $muzakki = Muzakki::where('user_id', $auth->id)->first();
 
+        if (is_null($muzakki)) {
+            Muzakki::create([
+                'user_id' => $auth->id,
+                'npwz' => rand(100000000000, 999999999999),
+                'jenis' => $request->jenis,
+            ]);
+        } else {
+            $muzakki->update([
+                'jenis' => $request->jenis,
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Berhasil mengubah data');
     }
 }

@@ -91,9 +91,9 @@ class Pendistribusian extends BaseModel
             $totalTarget = $this->totalTarget();
             $totalRealisasi = $this->totalRealisasi($asnaf);
         } else {
+            $totalRealisasi = $this->totalRealisasi($asnaf);
             $asnaf = str_replace(' ', '_', $asnaf);
             $totalTarget = $this->where('id', $this->id)->pluck('target_' . $asnaf)->first();
-            $totalRealisasi = $this->totalRealisasi($asnaf);
         }
 
         $persentase = ($totalRealisasi / $totalTarget) * 100;

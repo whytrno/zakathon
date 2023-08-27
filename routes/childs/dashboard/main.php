@@ -12,7 +12,9 @@ Route::prefix('dashboard')->group(function () {
         include_once "pengumpulan.php";
     });
 
-    Route::prefix('pendistribusian')->group(function(){
+    Route::prefix('pendistribusian')->group(function () {
         include_once "pendistribusian.php";
     });
+
+    include_once "rekap.php";
 });

@@ -7,25 +7,29 @@
                 <img src="{{ asset('images/banner.png') }}" alt="banner">
             </div>
             <h1 class="text-center font-bold text-md">TUNAIKAN ZAKAT, INFAQ & SEDEKAH<br>DENGAN AMAN & MUDAH</h1>
-            <form action="" class="space-y-8">
+            <form action="" class="space-y-8" method="POST"
+                  enctype="multipart/form-data">
+                @csrf
                 <div class="bg-[#FBFBFB] rounded-[12px] drop-shadow-xl py-8 space-y-4 px-6 ">
                     @csrf
                     <div class="space-y-2">
                         <p>Nama Lengkap</p>
-                        <input type="text" name="" id="" placeholder="Masukkan Nama Lengkap"
-                            class="rounded-[12px] px-4 py-2 shadow-lg w-full">
+                        <input type="text" readonly name="name" value="{{$user->nama}}" id=""
+                               placeholder="Masukkan Nama Lengkap"
+                               class="rounded-[12px] px-4 py-2 shadow-lg w-full bg-gray-200">
                     </div>
                     <div class="space-y-2">
-                        <p>Email</p>
-                        <input type="email" name="" id="" placeholder="Masukkan Email"
-                            class="rounded-[12px] px-4 py-2 shadow-lg w-full">
+                        <p>Jenis</p>
+                        <input type="text" readonly name="jenis" value="{{ucwords($user->muzakki->jenis)}}" id=""
+                               placeholder="Masukkan Email"
+                               class="rounded-[12px] px-4 py-2 shadow-lg w-full bg-gray-200">
                     </div>
                     <div class="space-y-2 ">
                         <p>Jenis Dana</p>
                         <select class="w-full rounded-[12px] px-4 py-2 shadow-lg w-full" name="" id="">
-                            <option value="zakat">Zakat</option>
-                            <option value="infaq">Infaq</option>
-                            <option value="sedekah">Sedekah</option>
+                            @foreach($jenis_dana as $jd)
+                                <option value="{{$jd}}">{{ucwords($jd)}}</option>
+                            @endforeach
                         </select>
                     </div>
 
@@ -35,57 +39,56 @@
                             <div class="flex items-center justify-center bg-[#1D8E4880] px-2 py-2 rounded-[12px]">
                                 <p class="rounded-[12px] px-2 text-white">RP.</p>
                             </div>
-                            <input type="number" name="" id="" class="rounded-r-[12px] px-4 py-2 w-full"
-                                placeholder="Masukkan Jumlah Nominal">
+                            <input type="number" name="jumlah" id="" class="rounded-r-[12px] px-4 py-2 w-full"
+                                   placeholder="Masukkan Jumlah Nominal">
                         </div>
                     </div>
 
-                    <div class="space-y-2">
-                        <p>Upload Bukti Pembarayan</p>
-                        <div onclick="document.getElementById('choseFile').click()"
-                            class="flex justify-center rounded-[12px] shadow-lg w-full border-dashed border-2 border-black py-6 cursor-pointer">
-                            <div class="space-y-2">
-                                <div class="flex justify-center">
-                                    <svg width="68" height="43" viewBox="0 0 68 43" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M57.12 18.2674C57.5556 17.263 57.8 16.1647 57.8 15.0194C57.8 10.0442 53.2313 6.00777 47.6 6.00777C45.5069 6.00777 43.5519 6.571 41.9369 7.52849C38.9938 3.02266 33.5006 0 27.2 0C17.8075 0 10.2 6.72119 10.2 15.0194C10.2 15.2729 10.2106 15.5263 10.2212 15.7798C4.27125 17.6291 0 22.6418 0 28.5369C0 35.9997 6.85313 42.0544 15.3 42.0544H54.4C61.9119 42.0544 68 36.6756 68 30.0389C68 24.2282 63.325 19.3751 57.12 18.2674ZM41.7988 24.0311H34.85V34.5447C34.85 35.3708 34.085 36.0466 33.15 36.0466H28.05C27.115 36.0466 26.35 35.3708 26.35 34.5447V24.0311H19.4013C17.8819 24.0311 17.1275 22.4165 18.2006 21.4684L29.3994 11.5743C30.0581 10.9923 31.1419 10.9923 31.8006 11.5743L42.9994 21.4684C44.0725 22.4165 43.3075 24.0311 41.7988 24.0311Z"
-                                            fill="#E5E7EB" />
-                                    </svg>
-                                </div>
-
-
-                                <p class="text-[#7BB1F9]">Jelajahi file</p>
-                            </div>
+                    <div class="space-y-2 col-span-2">
+                        <p>Upload Bukti Pembayaran <label class="text-red-700">*</label></p>
+                        <div onclick="document.getElementById('file').click()" id="file-container"
+                             class="cursor-pointer hover:text-[#014F31] hover:border-[#014F31] hover:fill-[#014F31] flex flex-col items-center rounded-[12px] py-8 justyfy-center border-dashed border-2 text-gray-300 fill-gray-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                 class="w-16 h-16">
+                                <path fill-rule="evenodd"
+                                      d="M10.5 3.75a6 6 0 00-5.98 6.496A5.25 5.25 0 006.75 20.25H18a4.5 4.5 0 002.206-8.423 3.75 3.75 0 00-4.133-4.303A6.001 6.001 0 0010.5 3.75zm2.03 5.47a.75.75 0 00-1.06 0l-3 3a.75.75 0 101.06 1.06l1.72-1.72v4.94a.75.75 0 001.5 0v-4.94l1.72 1.72a.75.75 0 101.06-1.06l-3-3z"
+                                      clip-rule="evenodd"/>
+                            </svg>
+                            <p id="file-name" class="font-semibold">Lampirkan file Anda di sini atau jelajahi file</p>
                         </div>
+                        <div class="text-black/30">
+                            <p>Jenis file yang diterima: png | jpg | jpeg</p>
+                            <p>Ukuran maksimal file : 2MB</p>
+                        </div>
+                        <input type="file" name="bukti_pembayaran_file" id="file" class="hidden" accept="image/*">
+                        @error('bukti_pembayaran_file')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
-                    <input type="file" class="hidden" id="choseFile">
+
                     <button class="rounded-[12px] w-full py-2 text-[#FFFFFF] bg-[#1D8E48] ">Kirim</button>
-
                 </div>
-
             </form>
-
-
         </div>
     </div>
-
-    {{-- <div class="bg-gray-200 h-screen flex justify-center items-center">
-        <button id="showModal" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Buka Modal</button>
-
-<div id="modal" class="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex justify-center items-center hidden">
-    <div class="bg-white rounded p-6 w-1/2">
-        <h2 class="text-xl font-bold mb-4">Modal Title</h2>
-        <p>Isi modal di sini...</p>
-        <button id="closeModal" class="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Tutup Modal</button>
-    </div>
-</div>
-    </div> --}}
 @endsection
 
 
 @push('scripts')
     <script>
+        $(document).ready(function () {
+            $('#file').on('change', function () {
+                var fileName = this.files[0].name;
+                console.log(fileName)
+
+                $('#file-container').removeClass('text-gray-300 fill-gray-300')
+                    .addClass('border-[#014F31] text-[#014F31] fill-[#014F31] border-2');
+
+                var fileText = document.getElementById('file-name');
+                fileText.textContent = fileName;
+            });
+        })
+
         const showModalButton = document.getElementById('showModal');
         const closeModalButton = document.getElementById('closeModal');
         const modal = document.getElementById('modal');

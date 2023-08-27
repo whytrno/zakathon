@@ -78,7 +78,7 @@ class PendistribusianDetailController extends Controller
 
         $request->merge([
             'pendistribusian_id' => $id,
-            'no_pendistribusian' => rand(1000000000, 9999999999),
+            'no_pendistribusian' => date('d') . '/' . date('m') . '/' . date('y') . '/' . rand(10000, 99999),
             'bukti_pembayaran' => $fileName,
         ]);
 
@@ -136,5 +136,34 @@ class PendistribusianDetailController extends Controller
         $data->delete();
 
         return redirect()->route('pendistribusian.detail.index', $id)->with('success', 'Data berhasil dihapus');
+    }
+
+    public function numberToTerbilang($nominal)
+    {
+        $get_data = array("", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan", "sepuluh", "sebelas");
+        if ($nominal < 12)
+            return " " . $get_data[$nominal];
+        elseif ($nominal < 20)
+            return $this->numberToTerbilang($nominal - 10) . "belas";
+        elseif ($nominal < 100)
+            return $this->numberToTerbilang($nominal / 10) . " puluh" . $this->numberToTerbilang($nominal % 10);
+        elseif ($nominal < 200)
+            return " seratus" . $this->numberToTerbilang($nominal - 100);
+        elseif ($nominal < 1000)
+            return $this->numberToTerbilang($nominal / 100) . " ratus" . $this->numberToTerbilang($nominal % 100);
+        elseif ($nominal < 2000)
+            return " seribu" . $this->numberToTerbilang($nominal - 1000);
+        elseif ($nominal < 1000000)
+            return $this->numberToTerbilang($nominal / 1000) . " ribu" . $this->numberToTerbilang($nominal % 1000);
+        elseif ($nominal < 1000000000)
+            return $this->numberToTerbilang($nominal / 1000000) . " juta" . $this->numberToTerbilang($nominal % 1000000);
+    }
+
+    public function print($id, $detail_id)
+    {
+        $data = PendistribusianDetail::where('id', $detail_id)->with(['pendistribusian', 'mustahiq.user'])->first();
+        $data['terbilang'] = $this->numberToTerbilang($data->jumlah);
+
+        return view('dashboard.pendistribusian.detail.print', compact('data'));
     }
 }

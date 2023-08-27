@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->string('pemilik_rekening');
             $table->enum('bank', ['BCA', 'BRI', 'Mandiri', 'BSI']);
             $table->string('no_rek')->unique();
-            $table->enum('asnaf', ['fakir', 'miskin', 'amil', 'mualaf', 'riqob', 'gharim', 'fisabilillah', 'ibnu sabil']);
+            $table->enum('asnaf', ['fakir', 'miskin', 'amil', 'muallaf', 'riqob', 'gharim', 'fisabilillah', 'ibnu sabil']);
             $table->enum('pekerjaan', ['wirausaha', 'mahasiswa', 'karyawan', 'buruh']);
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');

@@ -8,7 +8,7 @@ class CreateRekeningTable extends Migration
 {
     public function up()
     {
-        Schema::create('rekening', function (Blueprint $table) {
+        Schema::create('rekenings', function (Blueprint $table) {
             $table->id();
             $table->string('bank');
             $table->string('no_rek');

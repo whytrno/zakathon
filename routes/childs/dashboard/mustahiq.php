@@ -12,6 +12,6 @@ Route::prefix('mustahiq')->group(function () {
     Route::post('{id}', [MustahiqController::class, 'update'])->name('mustahiq.update');
     Route::delete('{id}', [MustahiqController::class, 'destroy'])->name('mustahiq.delete');
 
-    Route::get('json/detail/{query}', [MustahiqController::class, 'searchJson']);
+    Route::get('json/detail/{id}', [MustahiqController::class, 'detailJson']);
     Route::get('json/{query}', [MustahiqController::class, 'searchJson']);
 });
