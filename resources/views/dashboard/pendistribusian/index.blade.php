@@ -110,7 +110,7 @@
                         {{ $data->program }}
                     </td>
                     <td class="px-6 py-4 text-center">
-                        {{ $data->bulan }}/{{ $data->tahun }}
+                        {{ $data->bulanToString($data->bulan) }}/{{ $data->tahun }}
                     </td>
                     <td class="px-6 py-4 text-center">
                         Rp. {{ number_format($data->totalTarget(), 0, ',', '.') }}
@@ -219,7 +219,7 @@
                             </div>
                             <div class="">
                                 <p class="font-semibold">Periode: </p>
-                                <p>{{ $data->bulan }}/{{ $data->tahun }}</p>
+                                <p>{{ $data->bulanToString($data->bulan) }}/{{ $data->tahun }}</p>
                             </div>
                             <div class="">
                                 <p class="font-semibold">Total Target: </p>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Mustahiq;
 use App\Models\Muzakki;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -111,5 +112,25 @@ class MuzakkiController extends Controller
         $data->delete();
 
         return redirect()->back()->with('success', 'Berhasil menghapus data');
+    }
+
+
+    public function searchJson($query)
+    {
+        $datas = Muzakki::with('user')
+            ->where('npwz', 'like', "%$query%")
+            ->orWhereHas('user', function ($q) use ($query) {
+                $q->where('nama', 'like', "%$query%");
+            })
+            ->get();
+
+        return response()->json($datas);
+    }
+
+    public function detailJson($id)
+    {
+        $data = Muzakki::where('id', $id)->with('user')->first();
+
+        return response()->json($data);
     }
 }

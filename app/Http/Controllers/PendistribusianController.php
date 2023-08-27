@@ -51,10 +51,6 @@ class PendistribusianController extends Controller
         $datas = Pendistribusian::with(['detail'])->get();
         $bulan = $this->bulan;
 
-        foreach ($datas as $data) {
-            $data->bulan = $this->bulanToString($data->bulan);
-        }
-
         return view('dashboard.pendistribusian.index', compact('datas', 'bulan'));
     }
 

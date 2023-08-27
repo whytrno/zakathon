@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pendistribusian;
-use App\Models\PendistribusianDetail;
+use App\Models\Pengumpulan;
+use App\Models\PengumpulanDetail;
+use App\Models\Rekening;
 use Illuminate\Http\Request;
 
-class PendistribusianDetailController extends Controller
+class PengumpulanDetailController extends Controller
 {
-    public $bulan, $asnaf;
+    public $bulan, $jenis_dana;
 
     public function __construct()
     {
@@ -27,15 +29,20 @@ class PendistribusianDetailController extends Controller
             12 => 'Desember',
         ];
 
-        $this->asnaf = [
-            1 => 'fakir',
-            2 => 'miskin',
-            3 => 'amil',
-            4 => 'muallaf',
-            5 => 'riqob',
-            6 => 'gharim',
-            7 => 'fisabilillah',
-            8 => 'ibnu sabil',
+        $this->jenis_dana = [
+            1 => 'zakat',
+            2 => 'infak/sedekah tidak terikat',
+            3 => 'infak/sedekah terikat',
+            4 => 'dskl',
+            5 => 'csr',
+            6 => 'zakat fitrah',
+        ];
+
+        $this->jenis_dana_detail = [
+            1 => 'zakat',
+            2 => 'infak',
+            3 => 'csr',
+            4 => 'dskl',
         ];
     }
 
@@ -48,71 +55,84 @@ class PendistribusianDetailController extends Controller
 
     public function index($id)
     {
-        $data = Pendistribusian::where('id', $id)->with(['detail'])->first();
+        $data = Pengumpulan::where('id', $id)->with(['detail'])->first();
         $data->bulan = $this->bulanToString($data->bulan);
-        $asnaf = $this->asnaf;
+        $jenis_dana_detail = $this->jenis_dana_detail;
 
-        return view('dashboard.pendistribusian.detail.index', compact('data', 'asnaf', 'id'));
+        return view('dashboard.pengumpulan.detail.index', compact('data', 'jenis_dana_detail', 'id'));
     }
 
     public function create($id)
     {
-        $data = Pendistribusian::findOrFail($id);
+        $data = Pengumpulan::findOrFail($id);
+        $jenis_dana = $this->jenis_dana;
+        $rekening = Rekening::all();
 
-        return view('dashboard.pendistribusian.detail.create', compact('data', 'id'));
+        $data->bulan = $this->bulanToString($data->bulan);
+
+        return view('dashboard.pengumpulan.detail.create', compact('data', 'id', 'jenis_dana', 'rekening'));
     }
 
     public function store(Request $request, $id)
     {
         $request->validate([
-            'mustahiq_id' => 'required|exists:mustahiqs,id',
-            'jenis_bantuan' => 'required',
+            'muzakki_id' => 'required|exists:muzakkis,id',
+            'rekening_id' => 'nullable|exists:rekenings,id',
+            'dalam_neraca' => 'required',
             'jumlah' => 'required|numeric',
             'via' => 'required',
+            'jenis_dana' => 'required',
             'bukti_pembayaran_file' => 'required',
         ]);
 
         $file = $request->file('bukti_pembayaran_file');
         $fileName = time() . '.' . $file->extension();
-        $file->move(public_path('uploads/pendistribusian/bukti_pembayaran'), $fileName);
+        $file->move(public_path('uploads/pengumpulan/bukti_pembayaran'), $fileName);
 
         $request->merge([
-            'pendistribusian_id' => $id,
-            'no_pendistribusian' => date('d') . '/' . date('m') . '/' . date('y') . '/' . rand(10000, 99999),
+            'pengumpulan_id' => $id,
+            'no_pengumpulan' => date('d') . '/' . date('m') . '/' . date('y') . '/' . rand(10000, 99999),
             'bukti_pembayaran' => $fileName,
         ]);
 
-        PendistribusianDetail::create($request->all());
+        PengumpulanDetail::create($request->all());
 
-        return redirect()->route('pendistribusian.detail.index', $id)->with('success', 'Data berhasil ditambahkan');
+        return redirect()->route('pengumpulan.detail.index', $id)->with('success', 'Data berhasil ditambahkan');
     }
 
     public function edit($id, $detail_id)
     {
-        $data = PendistribusianDetail::where('id', $detail_id)->with(['pendistribusian', 'mustahiq.user'])->first();
+        $jenis_dana = $this->jenis_dana;
+        $data = PengumpulanDetail::where('id', $detail_id)->with(['pengumpulan', 'muzakki.user', 'rekening'])->first();
+        $rekening = Rekening::all();
 
-        return view('dashboard.pendistribusian.detail.edit', compact('data', 'id', 'detail_id'));
+        $data->pengumpulan->bulan = $this->bulanToString($data->pengumpulan->bulan);
+
+        return view('dashboard.pengumpulan.detail.edit', compact('data', 'id', 'detail_id', 'jenis_dana', 'rekening'));
     }
 
     public function update(Request $request, $id, $detail_id)
     {
         $request->validate([
-            'jenis_bantuan' => 'required',
+            'rekening_id' => 'required|exists:rekenings,id',
+            'dalam_neraca' => 'required',
             'jumlah' => 'required|numeric',
             'via' => 'required',
+            'jenis_dana' => 'required',
         ]);
 
-        $data = PendistribusianDetail::findOrFail($detail_id);
+        $data = PengumpulanDetail::findOrFail($detail_id);
 
         if ($request->hasFile('bukti_pembayaran_file')) {
-            $file_path = public_path('uploads/pendistribusian/bukti_pembayaran/' . $data->bukti_pembayaran);
+            $file_path = public_path('uploads/pengumpulan/bukti_pembayaran/' . $data->bukti_pembayaran);
+
             if (!is_null($data->bukti_pembayaran) && file_exists($file_path)) {
                 unlink($file_path);
             }
 
             $file = $request->file('bukti_pembayaran_file');
             $fileName = time() . '.' . $file->extension();
-            $file->move(public_path('uploads/bukti_pembayaran'), $fileName);
+            $file->move(public_path('uploads/pengumpulan/bukti_pembayaran/'), $fileName);
 
             $request->merge([
                 'bukti_pembayaran' => $fileName,
@@ -121,21 +141,21 @@ class PendistribusianDetailController extends Controller
 
         $data->update($request->all());
 
-        return redirect()->route('pendistribusian.detail.index', $id)->with('success', 'Data berhasil diubah');
+        return redirect()->route('pengumpulan.detail.index', $id)->with('success', 'Data berhasil diubah');
     }
 
     public function destroy($id, $detail_id)
     {
-        $data = PendistribusianDetail::findOrFail($detail_id);
+        $data = PengumpulanDetail::findOrFail($detail_id);
 
-        $file_path = public_path('uploads/pendistribusian/bukti_pembayaran/' . $data->bukti_pembayaran);
+        $file_path = public_path('uploads//bukti_pembayaran/' . $data->bukti_pembayaran);
         if (file_exists($file_path)) {
             unlink($file_path);
         }
 
         $data->delete();
 
-        return redirect()->route('pendistribusian.detail.index', $id)->with('success', 'Data berhasil dihapus');
+        return redirect()->route('pengumpulan.detail.index', $id)->with('success', 'Data berhasil dihapus');
     }
 
     public function numberToTerbilang($nominal)

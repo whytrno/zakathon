@@ -7,30 +7,47 @@
                 <img src="{{ asset('images/banner.png') }}" alt="banner">
             </div>
             <h1 class="text-center font-bold text-md">TUNAIKAN ZAKAT, INFAQ & SEDEKAH<br>DENGAN AMAN & MUDAH</h1>
-            <form action="" class="space-y-8" method="POST"
+            <form action="{{route('home.bayar-zakat')}}" class="space-y-8" method="POST"
                   enctype="multipart/form-data">
                 @csrf
                 <div class="bg-[#FBFBFB] rounded-[12px] drop-shadow-xl py-8 space-y-4 px-6 ">
                     @csrf
                     <div class="space-y-2">
                         <p>Nama Lengkap</p>
-                        <input type="text" readonly name="name" value="{{$user->nama}}" id=""
+                        <input type="text" readonly value="{{$user->nama}}" id=""
                                placeholder="Masukkan Nama Lengkap"
                                class="rounded-[12px] px-4 py-2 shadow-lg w-full bg-gray-200">
                     </div>
                     <div class="space-y-2">
                         <p>Jenis</p>
-                        <input type="text" readonly name="jenis" value="{{ucwords($user->muzakki->jenis)}}" id=""
-                               placeholder="Masukkan Email"
+                        <input type="text" readonly value="{{ucwords($user->muzakki->jenis)}}" id=""
                                class="rounded-[12px] px-4 py-2 shadow-lg w-full bg-gray-200">
                     </div>
                     <div class="space-y-2 ">
                         <p>Jenis Dana</p>
-                        <select class="w-full rounded-[12px] px-4 py-2 shadow-lg w-full" name="" id="">
+                        <select name="jenis_dana" class="w-full rounded-[12px] px-4 py-2 shadow-lg w-full" name=""
+                                id="">
                             @foreach($jenis_dana as $jd)
                                 <option value="{{$jd}}">{{ucwords($jd)}}</option>
                             @endforeach
                         </select>
+                        @error('jenis_dana')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="bank space-y-2 ">
+                        <p>Pilih Bank <label class="text-red-700">*</label></p>
+                        <select name="rekening_id" class="-full rounded-[12px] px-4 py-2 shadow-lg w-full">
+                            <option value="" selected>Pilih Rekening</option>
+                            @foreach($rekening as $r)
+                                <option value="{{$r->id}}">{{$r->bank}} - {{$r->no_rek}}
+                                    - {{$r->pemilik_rekening}}</option>
+                            @endforeach
+                        </select>
+                        @error('rekening_id')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div class="space-y-2">
@@ -42,6 +59,9 @@
                             <input type="number" name="jumlah" id="" class="rounded-r-[12px] px-4 py-2 w-full"
                                    placeholder="Masukkan Jumlah Nominal">
                         </div>
+                        @error('jumlah')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div class="space-y-2 col-span-2">

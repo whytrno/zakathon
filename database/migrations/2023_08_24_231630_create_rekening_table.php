@@ -12,6 +12,7 @@ class CreateRekeningTable extends Migration
             $table->id();
             $table->string('bank');
             $table->string('no_rek');
+            $table->string('pemilik_rekening');
             $table->timestamps();
         });
     }

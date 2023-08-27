@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Muzakki;
+use App\Models\Pengumpulan;
+use App\Models\PengumpulanDetail;
+use App\Models\Rekening;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,8 +24,9 @@ class HomeController extends Controller
         $check = false;
         $user = User::where('id', Auth::user()->id)->with('muzakki')->first();
         $jenis_dana = $this->jenis_dana;
+        $rekening = Rekening::all();
 
-        return view('home.index', compact('check', 'user', 'jenis_dana'));
+        return view('home.index', compact('rekening', 'check', 'user', 'jenis_dana'));
     }
 
     public function profile()
@@ -32,7 +36,9 @@ class HomeController extends Controller
 
     public function history()
     {
-        return view('home.history');
+        $data = PengumpulanDetail::where('muzakki_id', Auth::user()->muzakki->id)->with(['pengumpulan', 'rekening'])->get();
+        
+        return view('home.history', compact('data'));
     }
 
     public function editProfile()
@@ -79,5 +85,36 @@ class HomeController extends Controller
         }
 
         return redirect()->back()->with('success', 'Berhasil mengubah data');
+    }
+
+    public function bayarZakat(Request $request)
+    {
+        $request->validate([
+            'rekening_id' => 'nullable|exists:rekenings,id',
+            'jumlah' => 'required|numeric',
+            'jenis_dana' => 'required',
+            'bukti_pembayaran_file' => 'required',
+        ]);
+
+        $file = $request->file('bukti_pembayaran_file');
+        $fileName = time() . '.' . $file->extension();
+        $file->move(public_path('uploads/pengumpulan/bukti_pembayaran'), $fileName);
+
+        $bulan = date('m');
+        $tahun = date('Y');
+        $pengumpulan = Pengumpulan::where('bulan', $bulan)->where('tahun', $tahun)->first();
+
+        $request->merge([
+            'pengumpulan_id' => $pengumpulan->id,
+            'muzakki_id' => Auth::user()->muzakki->id,
+            'via' => 'online',
+            'dalam_neraca' => 1,
+            'no_pengumpulan' => date('d') . '/' . date('m') . '/' . date('y') . '/' . rand(10000, 99999),
+            'bukti_pembayaran' => $fileName,
+        ]);
+
+        PengumpulanDetail::create($request->all());
+
+        return redirect()->route('home.history')->with('success', 'Berhasil mengubah data');
     }
 }

@@ -8,16 +8,15 @@ class CreateDataPengumpulanTable extends Migration
 {
     public function up()
     {
-        Schema::create('pengumpulan', function (Blueprint $table) {
+        Schema::create('pengumpulans', function (Blueprint $table) {
             $table->id();
-            $table->enum('bulan', ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']);
+            $table->integer('bulan');
             $table->integer('tahun');
-            $table->integer('target_zakat');
-            $table->integer('target_infak');
-            $table->integer('target_csr');
-            $table->integer('target_dskl');
-            $table->enum('status', ['belum diajukan', 'diajukan', 'revisi', 'disetujui']);
+            $table->string('target_zakat');
+            $table->string('target_infak');
+            $table->string('target_csr');
+            $table->string('target_dskl');
+            $table->enum('status', ['belum diajukan', 'diajukan', 'revisi', 'disetujui'])->default('belum diajukan');
             $table->timestamps();
         });
     }

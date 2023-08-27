@@ -7,14 +7,13 @@ use App\Models\Base\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DetailPengumpulan extends BaseModel
+class PengumpulanDetail extends BaseModel
 {
-    protected $table = 'detail_pengumpulan';
-
+    use HasFactory;
 
     public function pengumpulan()
     {
-        return $this->belongsTo(DataPengumpulan::class, 'pengumpulan_id');
+        return $this->belongsTo(Pengumpulan::class, 'pengumpulan_id');
     }
 
     public function rekening()
@@ -29,8 +28,6 @@ class DetailPengumpulan extends BaseModel
 
     public function muzakki()
     {
-        return $this->belongsTo(Muzakki::class, 'muzakki_id'); // Perbaikan disini
-
+        return $this->belongsTo(Muzakki::class, 'muzakki_id');
     }
-
 }

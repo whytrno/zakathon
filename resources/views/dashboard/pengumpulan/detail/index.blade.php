@@ -3,11 +3,11 @@
 @section('content')
     <div class="flex justify-between items-center">
         <div>
-            <h1 class="font-bold text-2xl text-[#014F31]">Data Pendistribusian : {{ $data->program }}</h1>
+            <h1 class="font-bold text-2xl text-[#014F31]">Data Pengumpulan</h1>
             <h1 class="font-bold text-2xl text-[#014F31]">Periode :
                 {{ $data->bulan }}/{{ $data->tahun }}</h1>
         </div>
-        <a href="{{ route('pendistribusian.index') }}"
+        <a href="{{ route('pengumpulan.index') }}"
            class="flex gap-2 hover:bg-[#1D8E48] items-center bg-[#014F31] rounded-2xl p-2 px-4 text-white fill-white stroke-white">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                  stroke="currentColor"
@@ -33,9 +33,6 @@
                     Target
                 </th>
                 <th class="p-8 text-xs text-gray-500">
-                    Vol <br> KEL | ORG
-                </th>
-                <th class="p-8 text-xs text-gray-500">
                     Jumlah
                 </th>
                 <th class="p-8 text-xs text-gray-500">
@@ -44,42 +41,33 @@
             </tr>
             </thead>
             <tbody class="bg-white">
-            @foreach ($asnaf as $asnaf)
-                @php
-                    $asnafData = str_replace(' ', '_', $asnaf);
-                @endphp
+            @foreach ($jenis_dana_detail as $jd)
                 <tr class="whitespace-nowrap">
                     <td class="px-6 py-4 text-sm text-center text-gray-500">
                         {{ $loop->iteration }}
                     </td>
                     <td class="px-6 py-4 text-center">
-                        {{ ucwords($asnaf) }}
+                        {{ ucwords($jd) }}
                     </td>
                     <td class="px-6 py-4 text-center">
-                        Rp. {{ number_format($data->{'target_' . $asnafData}, 0, ',', '.') }}
+                        Rp. {{ number_format($data->{'target_' . $jd}, 0, ',', '.') }}
                     </td>
                     <td class="px-6 py-4 text-center">
-                        {{ $data->totalVol($asnaf)[0] }} | {{ $data->totalVol($asnaf)[1] }}
+                        Rp. {{ number_format($data->totalRealisasi($jd), 0, ',', '.') }}
                     </td>
                     <td class="px-6 py-4 text-center">
-                        Rp. {{ number_format($data->totalRealisasi($asnaf), 0, ',', '.') }}
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        {{ $data->persenRealisasi($asnaf) }}%
+                        {{ $data->persenRealisasi($jd) }}%
                     </td>
                 </tr>
             @endforeach
             </tbody>
         </table>
-        <div class="grid grid-cols-6 w-full">
+        <div class="grid grid-cols-5 w-full">
             <p class="font-bold col-span-2 px-6 py-4 text-center">
                 Total:
             </p>
             <p class="px-6 py-4 text-center">
                 Rp. {{ number_format($data->totalTarget(), 0, ',', '.') }}
-            </p>
-            <p class="px-6 py-4 text-center">
-                {{ $data->totalVol()[0] }} | {{ $data->totalVol()[1] }}
             </p>
             <p class="px-6 py-4 text-center">
                 Rp. {{ number_format($data->totalRealisasi(), 0, ',', '.') }}
@@ -94,7 +82,7 @@
         <div class="flex justify-between items-center">
             <h1 class="font-bold text-xl text-[#014F31]">Riwayat Pendistribusian</h1>
 
-            <a href="{{ route('pendistribusian.detail.create', $data->id) }}"
+            <a href="{{ route('pengumpulan.detail.create', $data->id) }}"
                class="flex gap-2 hover:bg-[#1D8E48] items-center bg-[#014F31] rounded-2xl p-2 px-4 text-white fill-white stroke-white">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                      stroke="currentColor" class="w-6 h-6">
@@ -117,10 +105,7 @@
                     Nama
                 </th>
                 <th class="p-8 text-xs text-gray-500">
-                    Jenis
-                </th>
-                <th class="p-8 text-xs text-gray-500">
-                    Asnaf
+                    Jenis Dana
                 </th>
                 <th class="p-8 text-xs text-gray-500">
                     Jumlah Dana
@@ -138,22 +123,19 @@
                     </td>
                     <td onclick="toggleModal({{ $detail->id }})"
                         class="px-6 py-4 text-center text-blue-700 hover:text-blue-300 cursor-pointer">
-                        {{ $detail->no_pendistribusian }}
+                        {{ $detail->no_pengumpulan }}
                     </td>
                     <td class="px-6 py-4 text-center">
-                        {{ $detail->mustahiq->user->nama }}
+                        {{ $detail->muzakki->user->nama }}
                     </td>
                     <td class="px-6 py-4 text-center">
-                        {{ ucwords($detail->mustahiq->jenis) }}
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        {{ ucwords($detail->mustahiq->asnaf) }}
+                        {{ ucwords($detail->jenis_dana) }}
                     </td>
                     <td class="px-6 py-4 text-center">
                         Rp. {{ number_format($detail->jumlah, 0, ',', '.') }}
                     </td>
                     <td class="px-6 py-4 flex justify-center gap-2">
-                        <a href="{{ route('pendistribusian.detail.print', [$id, $detail->id]) }}"
+                        <a href="{{ route('pengumpulan.detail.print', [$id, $detail->id]) }}"
                            class="flex items-center justify-center bg-blue-500 p-2 rounded-full">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="w-4 h-4 stroke-white">
@@ -162,7 +144,7 @@
                             </svg>
                         </a>
 
-                        <a href="{{ route('pendistribusian.detail.edit', [$id, $detail->id]) }}"
+                        <a href="{{ route('pengumpulan.detail.edit', [$id, $detail->id]) }}"
                            class="flex items-center justify-center bg-blue-500 p-2 rounded-full">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                  stroke-width="1.5" stroke="currentColor" class="w-4 h-4 stroke-white">
@@ -171,7 +153,7 @@
                             </svg>
                         </a>
 
-                        <form action="{{ route('pendistribusian.detail.delete', [$id, $detail->id]) }}" method="POST">
+                        <form action="{{ route('pengumpulan.detail.delete', [$id, $detail->id]) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" onclick="confirm('Apakah anda yakin ingin menghapus data ini?')"
@@ -200,16 +182,12 @@
 
                         <div class="grid grid-cols-2 gap-5">
                             <div class="">
-                                <p class="font-semibold">Nama Mustahiq: </p>
-                                <p>{{ ucwords($detail->mustahiq->user->nama) }}</p>
+                                <p class="font-semibold">Nama Muzakki: </p>
+                                <p>{{ ucwords($detail->muzakki->user->nama) }}</p>
                             </div>
                             <div class="">
-                                <p class="font-semibold">Jenis Mustahiq: </p>
-                                <p>{{ ucwords($detail->mustahiq->jenis) }}</p>
-                            </div>
-                            <div class="">
-                                <p class="font-semibold">Asnaf: </p>
-                                <p>{{ ucwords($detail->mustahiq->asnaf) }}</p>
+                                <p class="font-semibold">Jenis Muzakki: </p>
+                                <p>{{ ucwords($detail->muzakki->jenis) }}</p>
                             </div>
                             <div class="">
                                 <p class="font-semibold">Via: </p>
@@ -217,32 +195,32 @@
                             </div>
                             <div class="{{ $detail->via == 'online' ? '' : 'hidden' }}">
                                 <p class="font-semibold">Bank: </p>
-                                <p>{{ ucwords($detail->mustahiq->bank) }}</p>
-                            </div>
-                            <div class="{{ $detail->via == 'online' ? '' : 'hidden' }}">
-                                <p class="font-semibold">Atas Nama: </p>
-                                <p>{{ ucwords($detail->mustahiq->pemilik_rekening) }}</p>
+                                <p>{{ ucwords($detail->rekening->bank) }}</p>
                             </div>
                             <div class="{{ $detail->via == 'online' ? '' : 'hidden' }}">
                                 <p class="font-semibold">No. Rekening: </p>
-                                <p>{{ ucwords($detail->mustahiq->no_rek) }}</p>
+                                <p>{{ ucwords($detail->rekening->no_rek) }}</p>
+                            </div>
+                            <div class="{{ $detail->via == 'online' ? '' : 'hidden' }}">
+                                <p class="font-semibold">Atas Nama: </p>
+                                <p>{{ ucwords($detail->rekening->pemilik_rekening) }}</p>
                             </div>
                             <div class="">
-                                <p class="font-semibold">Jenis Bantuan: </p>
-                                <p>{{ ucwords($detail->jenis_bantuan) }}</p>
+                                <p class="font-semibold">Jenis Dana: </p>
+                                <p>{{ ucwords($detail->jenis_dana) }}</p>
                             </div>
                             <div class="">
                                 <p class="font-semibold">Jumlah Dana: </p>
                                 <p>Rp. {{ number_format($detail->jumlah, 0, ',', '.') }}</p>
                             </div>
                             <a target="_blank"
-                               href="{{ asset('uploads/pendistribusian/bukti_pembayaran/' . $detail->bukti_pembayaran) }}"
+                               href="{{ asset('uploads/pengumpulan/bukti_pembayaran/' . $detail->bukti_pembayaran) }}"
                                class="col-span-2 flex justify-center">
                                 <div class="space-y-3">
                                     <p class="font-semibold text-center">Bukti Pembayaran</p>
 
                                     <img class="object-contain h-60 w-full"
-                                         src="{{ asset('uploads/pendistribusian/bukti_pembayaran/' . $detail->bukti_pembayaran) }}"
+                                         src="{{ asset('uploads/pengumpulan/bukti_pembayaran/' . $detail->bukti_pembayaran) }}"
                                          alt="">
                                 </div>
                             </a>

@@ -9,11 +9,13 @@ Route::prefix('dashboard')->group(function () {
     Route::prefix('user')->group(function () {
         include_once "muzakki.php";
         include_once "mustahiq.php";
-        include_once "pengumpulan.php";
     });
 
     Route::prefix('pendistribusian')->group(function () {
         include_once "pendistribusian.php";
+    });
+    Route::prefix('pengumpulan')->group(function () {
+        include_once "pengumpulan.php";
     });
 
     include_once "rekap.php";

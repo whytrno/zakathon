@@ -11,4 +11,7 @@ Route::prefix('muzakki')->group(function () {
     Route::post('', [MuzakkiController::class, 'store'])->name('muzakki.store');
     Route::post('{id}', [MuzakkiController::class, 'update'])->name('muzakki.update');
     Route::delete('{id}', [MuzakkiController::class, 'destroy'])->name('muzakki.delete');
+
+    Route::get('json/detail/{id}', [MuzakkiController::class, 'detailJson']);
+    Route::get('json/{query}', [MuzakkiController::class, 'searchJson']);
 });

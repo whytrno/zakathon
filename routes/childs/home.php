@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth;
@@ -10,4 +11,5 @@ Route::prefix('home')->group(function () {
     Route::get('profile', [HomeController::class, 'profile'])->name('home.profile');
     Route::get('edit-profile', [HomeController::class, 'editProfile'])->name('home.edit-profile');
     Route::post('edit-profile', [HomeController::class, 'updateProfile'])->name('home.update-profile');
+    Route::post('bayar-zakat', [HomeController::class, 'bayarZakat'])->name('home.bayar-zakat');
 });
