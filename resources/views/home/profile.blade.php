@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="flex flex-col justify-center items-center h-full space-y-[40px] mb-40 mt-10">
-        <div class="lg:w-2/5 w-full lg:px-20 px-10">
+        <div class="lg:w-1/2 w-full lg:px-20 px-10">
             <h1 class="text-xl font-bold pb-2 border-b-2 w-full">Profile</h1>
 
             <div class="flex gap-10 items-center py-5 border-b-2">

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Donasi;
 use App\Models\Muzakki;
+use App\Models\Order;
 use App\Models\Pengumpulan;
 use App\Models\PengumpulanDetail;
 use App\Models\Rekening;
@@ -19,14 +21,36 @@ class HomeController extends Controller
         $this->jenis_dana = ['zakat', 'infak/sedekah tidak terikat', 'infak/sedekah terikat', 'dskl', 'csr', 'zakat fitrah'];
     }
 
+//    HOME PAGE
+    public function homeIndex()
+    {
+        return view('index');
+    }
+
+    public function homeDonation()
+    {
+        $data = Donasi::where('status', 'disetujui')->get();
+
+        return view('donasi', compact('data'));
+    }
+
+    public function homeDonationDetail($id)
+    {
+        $data = Donasi::findOrFail($id);
+
+        return view('donasi-detail', compact('data'));
+    }
+
     public function index()
     {
-        $check = false;
         $user = User::where('id', Auth::user()->id)->with('muzakki')->first();
         $jenis_dana = $this->jenis_dana;
         $rekening = Rekening::all();
+        $snapToken = null;
 
-        return view('home.index', compact('rekening', 'check', 'user', 'jenis_dana'));
+        session('snap_token') ? $snapToken = session('snap_token') : $snapToken = null;
+
+        return view('home.index', compact('rekening', 'user', 'jenis_dana', 'snapToken'));
     }
 
     public function profile()
@@ -36,8 +60,10 @@ class HomeController extends Controller
 
     public function history()
     {
-        $data = PengumpulanDetail::where('muzakki_id', Auth::user()->muzakki->id)->with(['pengumpulan', 'rekening'])->get();
-        
+        $data = PengumpulanDetail::where('muzakki_id', Auth::user()->muzakki->id)->with(['pengumpulan', 'rekening'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         return view('home.history', compact('data'));
     }
 
@@ -90,15 +116,9 @@ class HomeController extends Controller
     public function bayarZakat(Request $request)
     {
         $request->validate([
-            'rekening_id' => 'nullable|exists:rekenings,id',
             'jumlah' => 'required|numeric',
             'jenis_dana' => 'required',
-            'bukti_pembayaran_file' => 'required',
         ]);
-
-        $file = $request->file('bukti_pembayaran_file');
-        $fileName = time() . '.' . $file->extension();
-        $file->move(public_path('uploads/pengumpulan/bukti_pembayaran'), $fileName);
 
         $bulan = date('m');
         $tahun = date('Y');
@@ -110,11 +130,43 @@ class HomeController extends Controller
             'via' => 'online',
             'dalam_neraca' => 1,
             'no_pengumpulan' => date('d') . '/' . date('m') . '/' . date('y') . '/' . rand(10000, 99999),
-            'bukti_pembayaran' => $fileName,
         ]);
 
-        PengumpulanDetail::create($request->all());
+        $insertedData = PengumpulanDetail::create($request->all());
 
-        return redirect()->route('home.history')->with('success', 'Berhasil mengubah data');
+        \Midtrans\Config::$serverKey = config('midtrans.server_key');
+        \Midtrans\Config::$isProduction = false;
+        \Midtrans\Config::$isSanitized = true;
+        \Midtrans\Config::$is3ds = true;
+
+        $params = array(
+            'transaction_details' => array(
+                'order_id' => $insertedData->no_pengumpulan,
+                'gross_amount' => $insertedData->jumlah,
+            ),
+            'customer_details' => array(
+                'name' => auth()->user()->nama,
+                'phone' => auth()->user()->telepon,
+                'address' => auth()->user()->alamat,
+            ),
+        );
+
+        $snapToken = \Midtrans\Snap::getSnapToken($params);
+
+        return redirect()->route('home.index')->with('snap_token', $snapToken);
+    }
+
+    public function midtransCallback(Request $request)
+    {
+
+        $serverKey = config('midtrans.server_key');
+        $hashed = hash('sha512', $request->order_id . $request->status_code . $request->gross_amount . $serverKey);
+
+        if ($hashed == $request->signature_key) {
+            if ($request->transaction_status == 'capture') {
+                $order = PengumpulanDetail::where('no_pengumpulan', $request->order_id);
+                $order->update(['status' => 'berhasil']);
+            }
+        }
     }
 }

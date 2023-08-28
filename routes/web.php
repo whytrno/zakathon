@@ -15,9 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+include_once "home.php";
 
 Route::group(['middleware' => ['auth']], function () {
     include_once "childs/auth.php";

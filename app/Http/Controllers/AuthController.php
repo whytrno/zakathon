@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Muzakki;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -40,7 +41,17 @@ class AuthController extends Controller
 
     public function registerProcess(Request $request)
     {
-        User::create($request->except('password_confirmation'));
+        $request->validate([
+            'email' => 'required|email|unique:users',
+            'nik' => 'required|string|unique:users',
+        ]);
+
+        $user = User::create($request->except('password_confirmation'));
+        Muzakki::create([
+            'user_id' => $user->id,
+            'jenis' => $request->jenis,
+            'npwz' => rand(100000000000, 999999999999)
+        ]);
 
         return redirect()->route('login');
     }

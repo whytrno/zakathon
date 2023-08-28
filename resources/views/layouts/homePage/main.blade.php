@@ -13,40 +13,15 @@
             data-client-key="{{config('midtrans.client_key')}}"></script>
 </head>
 
-<body>
-<style>
-    @keyframes slideRight {
-        0% {
-            transform: translateX(0);
-            opacity: 1;
-        }
+<body class="space-y-10">
+@include('layouts.homePage.navbar')
 
-        100% {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-    }
+<div class="px-40">
+    @yield('content')
+</div>
 
-    .animated-element {
-        animation: slideRight 3s ease-in-out forwards;
-    }
-</style>
-
-@include('layouts.alert')
-@yield('content')
-
-@if (auth()->user())
-    @include('layouts.navbar')
-@endif
+@include('layouts.homePage.footer')
 </body>
-
-<script>
-    const alert = document.getElementById("alert");
-
-    setTimeout(() => {
-        alert.remove();
-    }, 3000);
-</script>
 @stack('scripts')
 
 </html>

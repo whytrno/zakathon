@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="flex flex-col justify-center items-center h-full space-y-[40px] mb-40 mt-10">
-        <div class="lg:w-2/5 px-20 lg:px-0 space-y-10">
+        <div class="lg:w-1/2 px-20 lg:px-0 space-y-10">
             <a href="{{ route('home.profile') }}" class="flex gap-6 border-b-2 pb-6">
                 <svg width="16" height="25" viewBox="0 0 16 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd"

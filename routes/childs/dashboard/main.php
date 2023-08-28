@@ -17,6 +17,9 @@ Route::prefix('dashboard')->group(function () {
     Route::prefix('pengumpulan')->group(function () {
         include_once "pengumpulan.php";
     });
+    Route::prefix('donasi')->group(function () {
+        include_once "donasi.php";
+    });
 
     include_once "rekap.php";
 });
