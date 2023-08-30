@@ -3,10 +3,11 @@
 @section('content')
     <div class="flex justify-between items-center">
         <a href="{{ route('pendistribusian.index') }}"
-            class="flex gap-2 hover:bg-[#1D8E48] items-center bg-[#014F31] rounded-2xl p-2 px-4 text-white fill-white stroke-white">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+           class="flex gap-2 hover:bg-[#1D8E48] items-center bg-[#014F31] rounded-2xl p-2 px-4 text-white fill-white stroke-white">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                 stroke="currentColor"
+                 class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
             </svg>
             Kembali
         </a>
@@ -23,9 +24,25 @@
                 <div class="space-y-2 col-span-2">
                     <p>Nama Program <label class="text-red-700">*</label></p>
                     <input type="text" value="{{ old('program') }}" name="program"
-                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
+                           class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
                     @error('program')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="space-y-2">
+                    <p>Cari Daerah Pendistribusian <label class="text-red-700">*</label></p>
+                    <input type="text" id="search" class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4"
+                           placeholder="Cari berdasarkan nama">
+                </div>
+
+                <div class="space-y-2">
+                    <p>Daerah Pendistribusian <label class="text-red-700">*</label></p>
+                    <select name="kabupaten_id" class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
+                        <option value=""></option>
+                    </select>
+                    @error('kabupaten_id')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
 
@@ -39,88 +56,88 @@
                         @endforeach
                     </select>
                     @error('bulan')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
 
                 <div class="space-y-2">
                     <p>Tahun <label class="text-red-700">*</label></p>
                     <input type="number" value="{{ old('tahun') }}" name="tahun"
-                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
+                           class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
                     @error('tahun')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
 
                 <div class="space-y-2">
                     <p>Target Fakir <label class="text-red-700">*</label></p>
                     <input type="number" value="{{ old('target_fakir') }}" name="target_fakir"
-                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
+                           class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
                     @error('target_fakir')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
 
                 <div class="space-y-2">
                     <p>Target Miskin <label class="text-red-700">*</label></p>
                     <input type="number" value="{{ old('target_miskin') }}" name="target_miskin"
-                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
+                           class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
                     @error('target_miskin')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
 
                 <div class="space-y-2">
                     <p>Target Amil <label class="text-red-700">*</label></p>
                     <input type="number" value="{{ old('target_amil') }}" name="target_amil"
-                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
+                           class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
                     @error('target_amil')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
 
                 <div class="space-y-2">
                     <p>Target Muallaf <label class="text-red-700">*</label></p>
                     <input type="number" value="{{ old('target_muallaf') }}" name="target_muallaf"
-                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
+                           class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
                     @error('target_muallaf')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
 
                 <div class="space-y-2">
                     <p>Target Riqob <label class="text-red-700">*</label></p>
                     <input type="number" value="{{ old('target_riqob') }}" name="target_riqob"
-                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
+                           class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
                     @error('target_riqob')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
 
                 <div class="space-y-2">
                     <p>Target Gharim <label class="text-red-700">*</label></p>
                     <input type="number" value="{{ old('target_gharim') }}" name="target_gharim"
-                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
+                           class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
                     @error('target_gharim')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
 
                 <div class="space-y-2">
                     <p>Target Fisabilillah <label class="text-red-700">*</label></p>
                     <input type="number" value="{{ old('target_fisabilillah') }}" name="target_fisabilillah"
-                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
+                           class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
                     @error('target_fisabilillah')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
 
                 <div class="space-y-2">
                     <p>Target Ibnu Sabil <label class="text-red-700">*</label></p>
                     <input type="number" value="{{ old('target_ibnu_sabil') }}" name="target_ibnu_sabil"
-                        class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
+                           class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
                     @error('target_ibnu_sabil')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
@@ -135,6 +152,37 @@
 
 @push('scripts')
     <script>
+        $(document).ready(function () {
+            $('#search').on('keyup', function () {
+                var query = $(this).val();
+                if (query !== '') {
+                    $.ajax({
+                        url: '/dashboard/kabupaten/' + query,
+                        method: 'GET',
+                        data: {
+                            query: query
+                        },
+                        success: function (data) {
+                            $('select[name="kabupaten_id"]').empty();
+                            $('select[name="kabupaten_id"]').append(
+                                '<option selected disabled>Pilih Kabupaten</option>'
+                            );
+                            $.each(data, function (key, value) {
+                                $('select[name="kabupaten_id"]').append(
+                                    '<option value="' + value.id + '">' + value.nama + '</option>'
+                                );
+                            });
+                        }
+                    });
+                } else {
+                    $('select[name="kabupaten_id"]').append(
+                        '<option selected disabled>Pilih Kabupaten</option>'
+                    );
+                    $('select[name="kabupaten_id"]').empty();
+                }
+            });
+        });
+
         function toggleJenis() {
             if ($('.jenis').val() == 'perorangan') {
                 $('.nik').removeClass('hidden');

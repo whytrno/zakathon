@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Donasi;
 use App\Models\Mustahiq;
+use App\Models\Pendistribusian;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +34,7 @@ class DonasiController extends Controller
     {
         $request->validate([
             'judul' => 'required|string|max:255',
-            'deskripsi' => 'required|string',
+            'deskripsi_singkat' => 'required',
             'target_donasi' => 'required|numeric',
             'banner_file' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
@@ -64,7 +65,7 @@ class DonasiController extends Controller
     {
         $request->validate([
             'judul' => 'required|string|max:255',
-            'deskripsi' => 'required|string',
+            'deskripsi_singkat' => 'required',
             'target_donasi' => 'required|numeric',
             'banner_file' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
@@ -89,6 +90,15 @@ class DonasiController extends Controller
         $data->update($request->all());
 
         return redirect()->route('donasi.index')->with('success', 'Berhasil mengubah data');
+    }
+
+    public function changeStatus($id, $type)
+    {
+        $data = Donasi::findOrFail($id);
+        $data->status = $type;
+        $data->save();
+
+        return redirect()->route('donasi.index')->with('success', 'Status berhasil diubah');
     }
 
     public function destroy($id)

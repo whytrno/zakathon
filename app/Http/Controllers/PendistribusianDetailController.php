@@ -48,7 +48,9 @@ class PendistribusianDetailController extends Controller
 
     public function index($id)
     {
-        $data = Pendistribusian::where('id', $id)->with(['detail'])->first();
+        $data = Pendistribusian::where('id', $id)->with(['detail'])
+            ->first();
+
         $data->bulan = $this->bulanToString($data->bulan);
         $asnaf = $this->asnaf;
 
@@ -78,7 +80,7 @@ class PendistribusianDetailController extends Controller
 
         $request->merge([
             'pendistribusian_id' => $id,
-            'no_pendistribusian' => date('d') . '/' . date('m') . '/' . date('y') . '/' . rand(10000, 99999),
+            'no_pendistribusian' => date('d') . date('m') . date('y') . rand(10000, 99999),
             'bukti_pembayaran' => $fileName,
         ]);
 

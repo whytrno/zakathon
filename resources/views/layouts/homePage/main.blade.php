@@ -14,14 +14,39 @@
 </head>
 
 <body class="space-y-10">
+<style>
+    @keyframes slideRight {
+        0% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        100% {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+
+    .animated-element {
+        animation: slideRight 3s ease-in-out forwards;
+    }
+</style>
+@include('layouts.alert')
+
 @include('layouts.homePage.navbar')
 
-<div class="px-40">
+<div class="lg:px-40 px-10">
     @yield('content')
 </div>
 
 @include('layouts.homePage.footer')
-</body>
+
 @stack('scripts')
+<script>
+    function toggleMobileMenu() {
+        $('#mobileMenu').toggleClass('hidden');
+    }
+</script>
+</body>
 
 </html>

@@ -12,8 +12,7 @@
 <div class="flex flex-col items-center p-10 space-y-5">
     <div class="font-bold space-y-5 text-center">
         <div>
-            <p>LAPORAN BULANAN</p>
-            <p>BIDANG PENDISTRIBUSIAN DAN PENDAYAGUNAAN ZIS & DSKL</p>
+            <p>LAPORAN BULANAN PENDISTRIBUSIAN</p>
             <p>BAZNAS KABUPATEN BANYUMAS</p>
             <p>TAHUN {{$tahun}}</p>
         </div>

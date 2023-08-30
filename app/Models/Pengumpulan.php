@@ -17,7 +17,8 @@ class Pengumpulan extends BaseModel
 
     public function detail()
     {
-        return $this->hasMany(PengumpulanDetail::class, 'pengumpulan_id');
+        return $this->hasMany(PengumpulanDetail::class, 'pengumpulan_id')
+            ->orderBy('created_at', 'desc');
     }
 
     public function totalTarget()
@@ -53,21 +54,25 @@ class Pengumpulan extends BaseModel
 
         if (is_null($jenis_dana)) {
             $total = PengumpulanDetail::where('pengumpulan_id', $this->id)
+                ->where('status', 'berhasil')
                 ->sum('jumlah');
         } else {
             if ($jenis_dana == 'zakat' || $jenis_dana == 'zakat_fitrah') {
                 $total = PengumpulanDetail::where('pengumpulan_id', $this->id)
                     ->where('jenis_dana', 'zakat')
+                    ->where('status', 'berhasil')
                     ->orWhere('jenis_dana', 'zakat fitrah')
                     ->sum('jumlah');
             } else if ($jenis_dana == 'infak/sedekah tidak terikat' || $jenis_dana == 'infak/sedekah terikat') {
                 $total = PengumpulanDetail::where('pengumpulan_id', $this->id)
                     ->where('jenis_dana', 'infak/sedekah tidak terikat')
+                    ->where('status', 'berhasil')
                     ->orWhere('jenis_dana', 'infak/sedekah terikat')
                     ->sum('jumlah');
             } else {
                 $total = PengumpulanDetail::where('pengumpulan_id', $this->id)
                     ->where('jenis_dana', $jenis_dana)
+                    ->where('status', 'berhasil')
                     ->sum('jumlah');
             }
         }
@@ -91,7 +96,6 @@ class Pengumpulan extends BaseModel
         }
 
         $persentase = ($totalRealisasi / $totalTarget) * 100;
-        $persentase = number_format($persentase, 2);
 
         return $persentase;
     }

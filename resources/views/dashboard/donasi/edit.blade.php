@@ -31,9 +31,19 @@
                 </div>
 
                 <div class="space-y-2 col-span-2">
-                    <p>Deskripsi <label class="text-red-700">*</label></p>
-                    <textarea name="deskripsi" id="" cols="30" rows="10"
-                              class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">{{$data->deskripsi}}</textarea>
+                    <p>Deskripsi Singkat <label class="text-red-700">*</label></p>
+                    <textarea name="deskripsi_singkat" id="" cols="30" rows="3"
+                              class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">{{$data->deskripsi_singkat}}</textarea>
+                    @error('deskripsi_singkat')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="space-y-2 col-span-2">
+                    <p>Deskripsi <label class="text-red-700">(Dapat Diksongkan)</label></p>
+                    <textarea name="deskripsi" id="tinyMce" class="w-full bg-[#F6F8FA] rounded-[12px] py-2 px-4">
+                        {{$data->deskripsi}}
+                    </textarea>
                     @error('deskripsi')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
@@ -91,6 +101,12 @@
                 var fileText = document.getElementById('file-name');
                 fileText.textContent = fileName;
             });
+        });
+
+        tinymce.init({
+            selector: '#tinyMce',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
         });
     </script>
 @endpush

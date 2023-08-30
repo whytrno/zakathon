@@ -111,6 +111,9 @@
                     Jumlah Dana
                 </th>
                 <th class="p-8 text-xs text-gray-500">
+                    Status
+                </th>
+                <th class="p-8 text-xs text-gray-500">
                     Aksi
                 </th>
             </tr>
@@ -133,6 +136,9 @@
                     </td>
                     <td class="px-6 py-4 text-center">
                         Rp. {{ number_format($detail->jumlah, 0, ',', '.') }}
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        {{ucwords($detail->status)}}
                     </td>
                     <td class="px-6 py-4 flex justify-center gap-2">
                         <a href="{{ route('pengumpulan.detail.print', [$id, $detail->id]) }}"
@@ -193,18 +199,20 @@
                                 <p class="font-semibold">Via: </p>
                                 <p>{{ ucwords($detail->via) }}</p>
                             </div>
-                            <div class="{{ $detail->via == 'online' ? '' : 'hidden' }}">
-                                <p class="font-semibold">Bank: </p>
-                                <p>{{ ucwords($detail->rekening->bank) }}</p>
-                            </div>
-                            <div class="{{ $detail->via == 'online' ? '' : 'hidden' }}">
-                                <p class="font-semibold">No. Rekening: </p>
-                                <p>{{ ucwords($detail->rekening->no_rek) }}</p>
-                            </div>
-                            <div class="{{ $detail->via == 'online' ? '' : 'hidden' }}">
-                                <p class="font-semibold">Atas Nama: </p>
-                                <p>{{ ucwords($detail->rekening->pemilik_rekening) }}</p>
-                            </div>
+                            @if(isset($data->rekening->bank))
+                                <div class="{{ $detail->via == 'online' ? '' : 'hidden' }}">
+                                    <p class="font-semibold">Bank: </p>
+                                    <p>{{ ucwords($detail->rekening->bank) }}</p>
+                                </div>
+                                <div class="{{ $detail->via == 'online' ? '' : 'hidden' }}">
+                                    <p class="font-semibold">No. Rekening: </p>
+                                    <p>{{ ucwords($detail->rekening->no_rek) }}</p>
+                                </div>
+                                <div class="{{ $detail->via == 'online' ? '' : 'hidden' }}">
+                                    <p class="font-semibold">Atas Nama: </p>
+                                    <p>{{ ucwords($detail->rekening->pemilik_rekening) }}</p>
+                                </div>
+                            @endif
                             <div class="">
                                 <p class="font-semibold">Jenis Dana: </p>
                                 <p>{{ ucwords($detail->jenis_dana) }}</p>

@@ -91,7 +91,7 @@ class PengumpulanDetailController extends Controller
 
         $request->merge([
             'pengumpulan_id' => $id,
-            'no_pengumpulan' => date('d') . '/' . date('m') . '/' . date('y') . '/' . rand(10000, 99999),
+            'no_pengumpulan' => date('d') . date('m') . date('y') . rand(10000, 99999),
             'bukti_pembayaran' => $fileName,
         ]);
 

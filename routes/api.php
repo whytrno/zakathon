@@ -15,8 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    include_once 'childApis/auth.php';
+    include_once 'childApis/pengumpulan.php';
 });
 
 Route::post('/midtrans-callback', [HomeController::class, 'midtransCallback']);
+
+include_once 'childApis/auth_not_login.php';

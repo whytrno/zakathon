@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kabupaten;
+use App\Models\Muzakki;
 use App\Models\Pendistribusian;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -48,7 +50,10 @@ class PendistribusianController extends Controller
 
     public function index()
     {
-        $datas = Pendistribusian::with(['detail'])->get();
+        $datas = Pendistribusian::with(['detail', 'kabupaten'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         $bulan = $this->bulan;
 
         return view('dashboard.pendistribusian.index', compact('datas', 'bulan'));
@@ -60,12 +65,13 @@ class PendistribusianController extends Controller
         $data->status = $type;
         $data->save();
 
-        return redirect()->route('pendistribusian.index')->with('success', 'Status berhasil diubah');
+        return redirect()->route('pendistribusian.index', $jenis)->with('success', 'Status berhasil diubah');
     }
 
     public function create()
     {
         $bulan = $this->bulan;
+
         return view('dashboard.pendistribusian.create', compact('bulan'));
     }
 
@@ -73,6 +79,7 @@ class PendistribusianController extends Controller
     {
         $request->validate([
             "program" => "required",
+            "kabupaten_id" => "required|numeric|exists:kabupatens,id",
             "bulan" => "required|numeric",
             "tahun" => "required|numeric|digits:4",
             "target_fakir" => "required|numeric",
@@ -132,6 +139,7 @@ class PendistribusianController extends Controller
     public function rekap(Request $request)
     {
         $request->validate([
+            'bulan' => 'required|numeric',
             'tahun' => 'required|numeric|digits:4',
         ]);
 
@@ -236,6 +244,7 @@ class PendistribusianController extends Controller
             "warna" => ['#FF5733', '#33FF57'],
             "persen" => [0, 0]
         ];
+
         foreach ($dataPerProgram as $item) {
             $asnaf = str_replace(' ', '_', $asnaf);
             foreach ($asnaf as $index => $a) {
@@ -244,7 +253,7 @@ class PendistribusianController extends Controller
                 $dataPerAsnaf['asnaf'][$index - 1]['vol'][0] += $item->totalVol($b)[0];
                 $dataPerAsnaf['asnaf'][$index - 1]['vol'][1] += $item->totalVol($b)[1];
                 $dataPerAsnaf['asnaf'][$index - 1]['jumlah_realisasi'] += $item->totalRealisasi($b);
-                $dataPerAsnaf['asnaf'][$index - 1]['persen'] += $item->persenRealisasi($b) / count($dataPerProgram);
+                $dataPerAsnaf['asnaf'][$index - 1]['persen'] += (int)$item->persenRealisasi($b) / count($dataPerProgram);
                 $asnafForChart['persen'][$index - 1] = $dataPerAsnaf['asnaf'][$index - 1]['persen'];
             }
 
@@ -264,7 +273,7 @@ class PendistribusianController extends Controller
             $dataPerAsnaf['jumlah']['vol'][0] += $item->totalVol()[0];
             $dataPerAsnaf['jumlah']['vol'][1] += $item->totalVol()[1];
             $dataPerAsnaf['jumlah']['jumlah_realisasi'] += $item->totalRealisasi();
-            $dataPerAsnaf['jumlah']['persen'] += $item->persenRealisasi() / count($dataPerProgram);
+            $dataPerAsnaf['jumlah']['persen'] += (int)$item->persenRealisasi() / count($dataPerProgram);
         }
 
         $jumlahRealisasiBantuan = $dataPerBantuan['produktif']['jumlah_realisasi'] + $dataPerBantuan['konsumtif']['jumlah_realisasi'];

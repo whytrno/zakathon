@@ -1,4 +1,4 @@
-<div class="grid grid-cols-3 py-20 px-20 gap-20 bg-[#01502D] text-white items-start">
+<div class="grid lg:grid-cols-3 py-20 lg:px-20 px-10 gap-20 bg-[#01502D] text-white items-start">
     <div class="space-y-2">
         <div>
             <img src="{{asset('logo-white.png')}}" alt="" class="h-24">

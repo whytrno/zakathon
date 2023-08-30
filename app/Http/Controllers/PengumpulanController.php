@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pendistribusian;
 use Illuminate\Http\Request;
 use App\Models\Pengumpulan;
 use App\Models\Muzakki;
@@ -36,13 +37,21 @@ class PengumpulanController extends Controller
             5 => 'csr',
             6 => 'zakat fitrah',
         ];
+
+        $this->jenis_dana_detail = [
+            1 => 'zakat',
+            2 => 'infak',
+            3 => 'csr',
+            4 => 'dskl',
+        ];
     }
 
     public function index()
     {
         $datas = Pengumpulan::all();
+        $bulan = $this->bulan;
 
-        return view('dashboard.pengumpulan.index', compact('datas'));
+        return view('dashboard.pengumpulan.index', compact('datas', 'bulan'));
     }
 
     public function create()
@@ -106,6 +115,123 @@ class PengumpulanController extends Controller
 
         return redirect()->route('pengumpulan.index')
             ->with('success', 'Pengumpulan updated successfully.');
+    }
+
+    public function rekap(Request $request)
+    {
+        $request->validate([
+            'bulan' => 'required|numeric',
+            'tahun' => 'required|numeric|digits:4',
+        ]);
+
+        $bulan = $this->bulan[$request->bulan];
+        $tahun = $request->tahun;
+
+        $data = Pengumpulan::where('bulan', $request->bulan)
+            ->where('tahun', $request->tahun)
+            ->with(['detail.muzakki.user'])
+            ->get();
+
+        if (is_null($data)) {
+            return redirect()->route('pendistribusian.index')->with('error', 'Data tidak ditemukan');
+        }
+
+        $dataPerAsnaf = [
+            "asnaf" => [
+                [
+                    "name" => "zakat",
+                    "target" => 0,
+                    "jumlah_realisasi" => 0,
+                    "persen" => 0,
+                ],
+                [
+                    "name" => "infak",
+                    "target" => 0,
+                    "jumlah_realisasi" => 0,
+                    "persen" => 0,
+                ],
+                [
+                    "name" => "csr",
+                    "target" => 0,
+                    "jumlah_realisasi" => 0,
+                    "persen" => 0,
+                ],
+                [
+                    "name" => "dskl",
+                    "target" => 0,
+                    "jumlah_realisasi" => 0,
+                    "persen" => 0,
+                ]
+            ],
+            "jumlah" => [
+                "target" => 0,
+                "jumlah_realisasi" => 0,
+                "persen" => 0,
+            ]
+        ];
+        $dataPerJenisDana = [
+            "jenis_dana" => [
+                [
+                    "name" => "zakat",
+                    "target" => 0,
+                    "jumlah_realisasi" => 0,
+                    "persen" => 0,
+                ],
+                [
+                    "name" => "infak/sedekah tidak terikat",
+                    "target" => 0,
+                    "jumlah_realisasi" => 0,
+                    "persen" => 0,
+                ],
+                [
+                    "name" => "infak/sedekah terikat",
+                    "target" => 0,
+                    "jumlah_realisasi" => 0,
+                    "persen" => 0,
+                ],
+                [
+                    "name" => "csr",
+                    "target" => 0,
+                    "jumlah_realisasi" => 0,
+                    "persen" => 0,
+                ],
+                [
+                    "name" => "dskl",
+                    "target" => 0,
+                    "jumlah_realisasi" => 0,
+                    "persen" => 0,
+                ],
+                [
+                    "name" => "zakat fitrah",
+                    "target" => 0,
+                    "jumlah_realisasi" => 0,
+                    "persen" => 0,
+                ]
+            ],
+            "jumlah" => [
+                "target" => 0,
+                "jumlah_realisasi" => 0,
+                "persen" => 0,
+            ]
+        ];
+
+        $jenis_dana_detail = $this->jenis_dana_detail;
+
+        foreach ($data as $d) {
+            foreach ($jenis_dana_detail as $index => $a) {
+                $dataPerAsnaf['asnaf'][$index - 1]['target'] += $d->{'target_' . $a};
+                $dataPerAsnaf['asnaf'][$index - 1]['jumlah_realisasi'] += $d->totalRealisasi($a);
+                $dataPerAsnaf['asnaf'][$index - 1]['persen'] += $d->persenRealisasi($a);
+
+                $dataPerJenisDana['jenis_dana'][$index - 1]['target'] += $d->{'target_' . $a};
+            }
+
+            $dataPerAsnaf['jumlah']['target'] += $d->totalTarget();
+            $dataPerAsnaf['jumlah']['jumlah_realisasi'] += $d->totalRealisasi();
+            $dataPerAsnaf['jumlah']['persen'] += $d->persenRealisasi() / count($data);
+        }
+
+        return view('dashboard.pengumpulan.rekap', compact('dataPerAsnaf', 'bulan', 'tahun', 'data', 'jenis_dana_detail', 'request'));
     }
 }
 

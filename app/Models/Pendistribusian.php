@@ -12,7 +12,13 @@ class Pendistribusian extends BaseModel
 
     public function detail()
     {
-        return $this->hasMany(PendistribusianDetail::class, 'pendistribusian_id');
+        return $this->hasMany(PendistribusianDetail::class, 'pendistribusian_id')
+            ->orderBy('created_at', 'desc');
+    }
+
+    public function kabupaten()
+    {
+        return $this->hasOne(Kabupaten::class, 'id', 'kabupaten_id');
     }
 
     public function totalTarget()

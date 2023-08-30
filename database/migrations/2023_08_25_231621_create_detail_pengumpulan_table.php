@@ -20,6 +20,9 @@ class CreateDetailPengumpulanTable extends Migration
             $table->enum('via', ['offline', 'online']);
             $table->enum('status', ['proses', 'berhasil', 'gagal']);
             $table->string('bukti_pembayaran')->nullable();
+            $table->string('dibayarkan_ke')->nullable();
+            $table->string('no_rek_pengirim')->nullable();
+            $table->string('dibayarkan_dari')->nullable();
             $table->timestamps();
 
             $table->foreign('pengumpulan_id')->references('id')->on('pengumpulans');

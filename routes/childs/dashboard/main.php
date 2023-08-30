@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('dashboard')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::get('/peta', [DashboardController::class, 'petaPendistribusian'])->name('dashboard.peta');
 
     Route::prefix('user')->group(function () {
         include_once "muzakki.php";
@@ -21,5 +22,8 @@ Route::prefix('dashboard')->group(function () {
         include_once "donasi.php";
     });
 
+    Route::get('kabupaten/{query}', [DashboardController::class, 'getKabupatenJson']);
+
+    include_once "pengajuan-bantuan.php";
     include_once "rekap.php";
 });

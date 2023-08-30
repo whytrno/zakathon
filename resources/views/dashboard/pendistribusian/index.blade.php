@@ -86,6 +86,9 @@
                     Program
                 </th>
                 <th class="p-8 text-xs text-gray-500">
+                    Kabupaten
+                </th>
+                <th class="p-8 text-xs text-gray-500">
                     Periode
                 </th>
                 <th class="p-8 text-xs text-gray-500">
@@ -108,6 +111,9 @@
                     <td onclick="toggleModal({{$data->id}})"
                         class="px-6 py-4 text-cente text-blue-700 hover:text-blue-300 cursor-pointer">
                         {{ $data->program }}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-center text-gray-500">
+                        {{ $data->kabupaten->nama }}
                     </td>
                     <td class="px-6 py-4 text-center">
                         {{ $data->bulanToString($data->bulan) }}/{{ $data->tahun }}

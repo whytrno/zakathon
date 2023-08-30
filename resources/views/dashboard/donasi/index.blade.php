@@ -97,7 +97,7 @@
                         {{ ucwords($data->judul) }}
                     </td>
                     <td class="px-6 py-4 text-center">
-                        {{substr($data->deskripsi, 0, 40) . '...'}}
+                        {{substr($data->deskripsi_singkat, 0, 20) . '...'}}
                     </td>
                     <td class="px-6 py-4 text-center">
                         Rp. {{ number_format($data->target_donasi, 0, ',', '.') }}
@@ -189,7 +189,8 @@
 
                 <div id="detailModal{{ $data->id }}"
                      class="hidden fixed h-full top-0 left-0 w-full flex items-center justify-center z-10">
-                    <div class="w-2/5 bg-white shadow-xl rounded-[12px] p-7 space-y-5 border border-gray-300">
+                    <div
+                        class="w-1/2 scroll-auto h-96 overflow-auto bg-white shadow-xl rounded-[12px] p-7 space-y-5 border border-gray-300">
                         <div class="border-b-2 border-gray-800 flex justify-between pb-2">
                             <h2 class="text-xl font-semibold">Detail Data Pendistribusian</h2>
                             <svg onclick="toggleModal({{ $data->id }})" xmlns="http://www.w3.org/2000/svg"
@@ -206,7 +207,7 @@
                             </div>
                             <div class="">
                                 <p class="font-semibold">Deskripsi: </p>
-                                <p>{{ $data->deskripsi }}</p>
+                                <p>{{ $data->deskripsi_singkat }}</p>
                             </div>
                             <div class="">
                                 <p class="font-semibold">Target Donasi: </p>
@@ -216,13 +217,19 @@
                                href="{{ asset('uploads/donasi/' . $data->banner) }}"
                                class="col-span-2 flex justify-center">
                                 <div class="space-y-3">
-                                    <p class="font-semibold text-center">Banner</p>
+                                    <p class="font-semibold">Banner:</p>
 
                                     <img class="object-contain h-60 w-full"
                                          src="{{ asset('uploads/donasi/' . $data->banner) }}"
                                          alt="">
                                 </div>
                             </a>
+                            <div class="">
+                                <p class="font-semibold">Deskripsi: </p>
+                                <div>
+                                    {!! $data->deskripsi !!}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

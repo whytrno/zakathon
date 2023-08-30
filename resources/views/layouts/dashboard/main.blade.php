@@ -12,6 +12,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" charset="utf8"
             src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.tiny.cloud/1/65e26xvf8mkn9pnuzct9ji06a9e50lf3snovabszlfns39dz/tinymce/6/tinymce.min.js"
+            referrerpolicy="origin"></script>
+    @livewireStyles
+
+    @stack('heads')
 </head>
 
 <body>
@@ -45,8 +50,8 @@
         @stack('outside-countainer')
     </div>
 </div>
-</body>
 
+@livewireScripts
 <script>
     const alert = document.getElementById("alert");
 
@@ -56,5 +61,6 @@
 </script>
 
 @stack('scripts')
+</body>
 
 </html>

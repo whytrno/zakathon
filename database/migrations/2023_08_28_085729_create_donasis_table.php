@@ -13,7 +13,8 @@ return new class extends Migration {
         Schema::create('donasis', function (Blueprint $table) {
             $table->id();
             $table->string('judul');
-            $table->text('deskripsi');
+            $table->text('deskripsi_singkat');
+            $table->text('deskripsi')->nullable();
             $table->string('banner')->nullable();
             $table->string('target_donasi');
             $table->enum('status', ['belum diajukan', 'diajukan', 'revisi', 'disetujui'])->default('belum diajukan');

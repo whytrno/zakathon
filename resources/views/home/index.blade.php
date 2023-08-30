@@ -93,47 +93,37 @@
             </form>
         </div>
     </div>
+    <div id="sucessModal" class="fixed hidden top-0 left-0 w-full h-full flex justify-center items-center">
+        <div class="bg-white shadow-xl rounded-[12px] p-5 space-y-8">
+            <div class="flex justify-end" onclick="toggleSucess()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                     stroke="currentColor" class="w-6 h-6 stroke-red-800">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </div>
+            <div class="flex justify-center">
+                <img src="{{asset('images/success-bayar.png')}}" alt="">
+            </div>
+            <div class="space-y-2 text-center">
+                <h1 class="text-2xl text-center font-bold">Berhasil Dikirim</h1>
+                <p class="font-semibold">Silahkan cek status pembayaran anda pada menu history.</p>
+                <p class="text-[#4D8AFF]">Pastikan status berhasil untuk mendapatkan bukti pembayaran</p>
+            </div>
+        </div>
+    </div>
 @endsection
 
 
 @push('scripts')
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
             crossorigin="anonymous"></script>
 
-    @if(!is_null($snapToken))
-        <script type="text/javascript">
-            // For example trigger on button clicked, or any time you need
-            var payButton = document.getElementById('pay-button');
-            // payButton.addEventListener('click', function () {
-            // Trigger snap popup. @TODO: Replace TRANSACTION_TOKEN_HERE with your transaction token
-            window.snap.pay('{{$snapToken}}', {
-                onSuccess: function (result) {
-                    /* You may add your own implementation here */
-                    // alert("payment success!");
-                    // console.log(result);
-                    window.location.href = '/home/history'
-                },
-                onPending: function (result) {
-                    /* You may add your own implementation here */
-                    alert("wating your payment!");
-                    console.log(result);
-                },
-                onError: function (result) {
-                    /* You may add your own implementation here */
-                    alert("payment failed!");
-                    console.log(result);
-                },
-                onClose: function () {
-                    /* You may add your own implementation here */
-                    alert('you closed the popup without finishing the payment');
-                }
-                // })
-            });
-        </script>
-    @endif
     <script>
+        function toggleSucces() {
+            $('#sucessModal').toggleClass('hidden');
+        }
+
         $(document).ready(function () {
             $('#file').on('change', function () {
                 var fileName = this.files[0].name;
@@ -159,4 +149,37 @@
             modal.classList.add('hidden');
         });
     </script>
+
+    @if(!is_null($snapToken))
+        <script type="text/javascript">
+            // For example trigger on button clicked, or any time you need
+            var payButton = document.getElementById('pay-button');
+            // payButton.addEventListener('click', function () {
+            // Trigger snap popup. @TODO: Replace TRANSACTION_TOKEN_HERE with your transaction token
+            window.snap.pay('{{$snapToken}}', {
+                onSuccess: function (result) {
+                    /* You may add your own implementation here */
+                    // alert("payment success!");
+                    // console.log(result);
+                    window.location.href = '/home/history'
+                    // toggleSucces()
+                },
+                onPending: function (result) {
+                    /* You may add your own implementation here */
+                    alert("wating your payment!");
+                    console.log(result);
+                },
+                onError: function (result) {
+                    /* You may add your own implementation here */
+                    alert("payment failed!");
+                    console.log(result);
+                },
+                onClose: function () {
+                    /* You may add your own implementation here */
+                    alert('you closed the popup without finishing the payment');
+                }
+                // })
+            });
+        </script>
+    @endif
 @endpush
