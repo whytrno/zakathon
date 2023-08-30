@@ -5,8 +5,7 @@
     <div class="flex flex-col gap-8 px-5">
         @php
             $menuActive = [
-                'dashboard' => true,
-                'pengumpulan' => false,
+                'pengumpulan' => true,
                 'pendistribusian' => false,
                 'pemberdayaan' => false,
                 'donasi' => false,
@@ -15,43 +14,40 @@
                 'peta' => false
             ];
 
-            if (Str::contains(url()->current(), 'pengumpulan')) {
-                $menuActive['dashboard'] = false;
-                $menuActive['pengumpulan'] = true;
-            } elseif (Str::contains(url()->current(), 'pendistribusian')) {
-                $menuActive['dashboard'] = false;
+            if (Str::contains(url()->current(), 'pendistribusian')) {
+                $menuActive['pengumpulan'] = false;
                 $menuActive['pendistribusian'] = true;
             } elseif (Str::contains(url()->current(), 'user')) {
-                $menuActive['dashboard'] = false;
+                $menuActive['pengumpulan'] = false;
                 $menuActive['user'] = true;
             } elseif (Str::contains(url()->current(), 'donasi')) {
-                $menuActive['dashboard'] = false;
+                $menuActive['pengumpulan'] = false;
                 $menuActive['donasi'] = true;
             } elseif (Str::contains(url()->current(), 'program-lainnya')) {
-                $menuActive['dashboard'] = false;
+                $menuActive['pengumpulan'] = false;
                 $menuActive['lainnya'] = true;
             } elseif (Str::contains(url()->current(), 'peta')) {
-                $menuActive['dashboard'] = false;
+                $menuActive['pengumpulan'] = false;
                 $menuActive['peta'] = true;
             } else {
-                $menuActive['dashboard'] = true;
+                $menuActive['pengumpulan'] = true;
             }
         @endphp
 
-        <a href="{{route('dashboard.index')}}"
-           class="flex gap-3 items-center px-6 cursor-pointer {{ $menuActive['dashboard'] ? 'items-center hover:bg-[#1D8E48] cursor-pointer bg-[#014F31] px-6 py-3 rounded-full' : 'group' }}">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                 class="w-8 h-8 {{ $menuActive['dashboard'] ? 'stroke-white fill-white' : 'group-hover:stroke-[#1D8E48] group-hover:fill-[#1D8E48] stroke-[#014F31] fill-[#014F31]' }}">
-                <path
-                    d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z"/>
-                <path
-                    d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z"/>
-            </svg>
+        {{--        <a href="{{route('dashboard.index')}}"--}}
+        {{--           class="flex gap-3 items-center px-6 cursor-pointer {{ $menuActive['dashboard'] ? 'items-center hover:bg-[#1D8E48] cursor-pointer bg-[#014F31] px-6 py-3 rounded-full' : 'group' }}">--}}
+        {{--            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"--}}
+        {{--                 class="w-8 h-8 {{ $menuActive['dashboard'] ? 'stroke-white fill-white' : 'group-hover:stroke-[#1D8E48] group-hover:fill-[#1D8E48] stroke-[#014F31] fill-[#014F31]' }}">--}}
+        {{--                <path--}}
+        {{--                    d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z"/>--}}
+        {{--                <path--}}
+        {{--                    d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z"/>--}}
+        {{--            </svg>--}}
 
-            <p
-                class="font-bold {{ $menuActive['dashboard'] ? 'text-white' : 'text-black/70 group-hover:text-[#1D8E48]' }}">
-                Dashboard</p>
-        </a>
+        {{--            <p--}}
+        {{--                class="font-bold {{ $menuActive['dashboard'] ? 'text-white' : 'text-black/70 group-hover:text-[#1D8E48]' }}">--}}
+        {{--                Dashboard</p>--}}
+        {{--        </a>--}}
 
         <a href="{{ route('pengumpulan.index') }}"
            class="flex gap-3 items-center px-6 cursor-pointer {{ $menuActive['pengumpulan'] ? 'items-center hover:bg-[#1D8E48] cursor-pointer bg-[#014F31] px-6 py-3 rounded-full' : 'group' }}">
