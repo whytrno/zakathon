@@ -27,7 +27,8 @@
                         <div class="space-y-3">
                             <div class="relative">
                                 <div class="w-full rounded-full py-1 bg-gray-400"></div>
-                                <div class="w-[40%] absolute top-0 left-0 rounded-full py-1 bg-[#014F31]"></div>
+                                <div
+                                    class="w-[{{$d->persen()}}%] absolute top-0 left-0 rounded-full py-1 bg-[#014F31]"></div>
                             </div>
                             <div class="flex justify-between">
                                 <div>

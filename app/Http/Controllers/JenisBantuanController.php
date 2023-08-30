@@ -26,10 +26,7 @@ class JenisBantuanController extends Controller
         $data->jenis_bantuan = ucwords(str_replace('_', ' ', $data->jenis_bantuan));
         $files = json_decode($data->file);
 
-//        foreach ($files as $key => $file) {
-//            dd($key, $file);
-//        }
-
+        
         return view('dashboard.pengajuan-bantuan.detail', compact('data', 'jenis', 'files'));
     }
 

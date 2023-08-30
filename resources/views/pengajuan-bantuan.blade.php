@@ -58,7 +58,7 @@
                                 <p>Ukuran maksimal file : 2MB</p>
                             </div>
                             <input type="file" name="{{$file['name']}}" id="{{$file['name']}}_file" class="hidden"
-                                   accept="image/*, .pdf">
+                                   accept="image/*">
                             @error('bukti_pembayaran_file')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror

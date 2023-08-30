@@ -105,9 +105,7 @@ class MuzakkiController extends Controller
     {
         $data = User::findOrFail($id);
 
-        if ($data->muzakki) {
-            $data->muzakki->delete();
-        }
+        Muzakki::where('user_id', $id)->delete();
 
         $data->delete();
 

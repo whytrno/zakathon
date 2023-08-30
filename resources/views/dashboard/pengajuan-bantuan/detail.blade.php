@@ -11,11 +11,11 @@
     </div>
 
     @foreach($files as $key => $file)
-        {{--        tampilkan seluruh file--}}
-        <p>{{$key}}, {{$file}}</p>
-        {{--        <embed src="{{asset('uploads/pengajuan-bantuan/'. $file)}}" type="" nodownload>--}}
-        <iframe src="https://sumanbogati.github.io/tiny.pdf" style="width:600px; height:500px;"></iframe>
-
+        @php
+            $nama = str_replace(' ', '_', $key);
+        @endphp
+        <p class="text-lg font-bold">{{ucwords($nama)}}</p>
+        <img src="{{asset('uploads/pengajuan-bantuan/' . $file)}}" alt="">
     @endforeach
 @endsection
 

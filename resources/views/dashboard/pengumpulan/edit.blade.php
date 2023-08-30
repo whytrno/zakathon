@@ -15,7 +15,7 @@
 
     <div class="bg-white shadow-xl rounded-[12px] p-7 space-y-5 border border-gray-300">
         <div class="border-b-2 border-gray-800 flex justify-between pb-2">
-            <h2 class="text-xl font-semibold">Ubah Data Pendistribusian</h2>
+            <h2 class="text-xl font-semibold">Ubah Data Pengumpulan</h2>
         </div>
 
         <form action="{{ route('pengumpulan.update', $id) }}" class="space-y-6" method="POST">

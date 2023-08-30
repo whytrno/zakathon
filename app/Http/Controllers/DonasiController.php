@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Donasi;
+use App\Models\DonasiDonatur;
+use App\Models\Donatur;
 use App\Models\Mustahiq;
 use App\Models\Pendistribusian;
 use App\Models\User;
@@ -105,8 +107,14 @@ class DonasiController extends Controller
     {
         $data = Donasi::findOrFail($id);
 
-        if ($data->donatur) {
-            $data->donatur->delete();
+        $transaksi = DonasiDonatur::where('donasi_id', $id)->get();
+
+        foreach ($transaksi as $item) {
+            $id = $item->donatur_id;
+            $item->delete();
+
+            Donatur::where('id', $id)->delete();
+
         }
 
         $data->delete();

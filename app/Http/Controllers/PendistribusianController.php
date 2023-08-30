@@ -65,14 +65,15 @@ class PendistribusianController extends Controller
         $data->status = $type;
         $data->save();
 
-        return redirect()->route('pendistribusian.index', $jenis)->with('success', 'Status berhasil diubah');
+        return redirect()->route('pendistribusian.index')->with('success', 'Status berhasil diubah');
     }
 
     public function create()
     {
         $bulan = $this->bulan;
+        $kabupaten = Kabupaten::all();
 
-        return view('dashboard.pendistribusian.create', compact('bulan'));
+        return view('dashboard.pendistribusian.create', compact('bulan', 'kabupaten'));
     }
 
     public function store(Request $request)

@@ -76,10 +76,10 @@
                     </td>
                     <td onclick="toggleModal({{$data->id}})"
                         class="px-6 py-4 text-center">
-                        {{ $data->jenis_bantuan }}
+                        {{ $data->nama_pemohon }}
                     </td>
                     <td class="px-6 py-4 text-sm text-center text-gray-500">
-                        {{ $data->nama_pemohon }}
+                        {{ $data->jenis_bantuan }}
                     </td>
                     <td class="px-6 py-4 text-center relative">
                         <div id="statusModal"

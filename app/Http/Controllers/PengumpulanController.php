@@ -233,5 +233,15 @@ class PengumpulanController extends Controller
 
         return view('dashboard.pengumpulan.rekap', compact('dataPerAsnaf', 'bulan', 'tahun', 'data', 'jenis_dana_detail', 'request'));
     }
+
+    public function destroy($id)
+    {
+        $pengumpulan = Pengumpulan::findOrFail($id);
+        $pengumpulan->detail()->delete();
+        $pengumpulan->delete();
+
+        return redirect()->route('pengumpulan.index')
+            ->with('success', 'Pengumpulan deleted successfully');
+    }
 }
 
